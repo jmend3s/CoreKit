@@ -6,15 +6,14 @@ Pwm::Pwm(pwm_dt_spec const& spec)
 {
 }
 
-bool Pwm::initialize() const
+void Pwm::initialize()
 {
-    bool initialized = false;
-    if (pwm_is_ready_dt(&_spec))
-    {
-        initialized = true;
-    }
+    pwm_is_ready_dt(&_spec);
+}
 
-    return initialized;
+void Pwm::update()
+{
+    
 }
 
 bool Pwm::setPulseNs(uint32_t const pulseNs) const

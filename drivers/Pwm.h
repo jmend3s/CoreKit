@@ -4,13 +4,15 @@
 
 #include <zephyr/drivers/pwm.h>
 
+#include "Component.h"
 
-class Pwm
+class Pwm : public Component
 {
 public:
     Pwm(pwm_dt_spec const& spec);
 
-    bool initialize() const;
+    void initialize() override;
+    void update() override;
 
     bool setPulseNs(uint32_t pulseNs) const;
     bool setPulseUs(uint32_t pulseUs) const;

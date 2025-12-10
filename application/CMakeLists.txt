@@ -1,4 +1,5 @@
 
-target_sources(CoreKit PRIVATE
-    Application.cpp
+target_sources(CoreKit
+    PRIVATE
+        Application.cpp
 )

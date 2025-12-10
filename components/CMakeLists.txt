@@ -1,4 +1,5 @@
 
-target_sources(CoreKit PRIVATE
-    Timer.cpp
+target_sources(CoreKit
+    PRIVATE
+        Timer.cpp
 )

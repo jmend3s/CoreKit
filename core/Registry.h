@@ -6,6 +6,7 @@
 
 #include <cstddef>
 
+
 template <size_t N>
 class Registry
 {
@@ -21,6 +22,7 @@ private:
     Component* _components[N];
     size_t _size = 0;
 };
+
 
 template <size_t N>
 bool Registry<N>::add(Component& component)
