@@ -1,23 +1,42 @@
 
 #include "Application.h"
 
+#include <zephyr/kernel.h>
 
-Application::Application()
-    : _registry()
+
+Application::Application(Component** components, size_t const count)
+    : _components(components)
+    , _count(count)
 {
 }
 
-bool Application::add(Component& component)
+void Application::initialize() const
 {
-    return _registry.add(component);
+    for (size_t i = 0; i < _count; i++)
+    {
+        _components[i]->initialize();
+    }
 }
 
-void Application::initialize()
+void Application::update() const
 {
-    _registry.initializeAll();
+    for (size_t i = 0; i < _count; i++)
+    {
+        _components[i]->update();
+    }
 }
 
-void Application::update()
+void Application::run()
 {
-    _registry.updateAll();
+    initialize();
+
+    while (true)
+    {
+        update();
+    }
+}
+
+void Application::loopSleep()
+{
+    k_msleep(1);
 }

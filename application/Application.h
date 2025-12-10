@@ -3,21 +3,26 @@
 #define __APPLICATION_H__
 
 #include "Component.h"
-#include "Registry.h"
+
+#include <cstdlib>
 
 
 class Application
 {
 public:
-    Application();
+    Application(Component** components, size_t count);
+    virtual ~Application() = default;
 
-    bool add(Component& component);
+    void initialize() const;
+    void update() const;
 
-    void initialize();
-    void update();
+    virtual void run();
+    virtual void loopSleep();
 
-private:
-    Registry<8> _registry;
+protected:
+    Component** _components;
+    size_t _count;
 };
+
 
 #endif
