@@ -1,6 +1,5 @@
 
-target_sources(CoreKit
-    PRIVATE
-        Component.cpp
-        Registry.cpp
+zephyr_library_sources(
+    Component.cpp
+    Registry.cpp
 )

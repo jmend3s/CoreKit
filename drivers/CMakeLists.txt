@@ -1,6 +1,5 @@
 
-target_sources(CoreKit
-    PRIVATE
-        Gpio.cpp
-        Pwm.cpp
+zephyr_library_sources(
+    Gpio.cpp
+    Pwm.cpp
 )

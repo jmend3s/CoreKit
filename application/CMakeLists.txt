@@ -1,5 +1,4 @@
 
-target_sources(CoreKit
-    PRIVATE
-        Application.cpp
+zephyr_library_sources(
+    Application.cpp
 )

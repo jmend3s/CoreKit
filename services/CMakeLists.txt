@@ -1,5 +1,4 @@
 
-target_sources(CoreKit
-    PRIVATE
-        TimerService.cpp
+zephyr_library_sources(
+    TimerService.cpp
 )
