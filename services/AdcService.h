@@ -6,33 +6,30 @@
 #include "Adc.h"
 #include "TimerService.h"
 
-#include <map>
-#include <functional>
-
 
 class AdcService : public Component
 {
 public:
     enum class Rate { Ms1, Ms10, Ms20, Ms100 };
 
-    AdcService(TimerService const& timer);
+    struct AdcEntry
+    {
+        Adc* adc;
+        Rate rate;
+    };
+
+    AdcService(AdcEntry* entries, size_t size, TimerService const& timer);
 
     void initialize() override;
     void update() override;
 
-    void registerAdc(Adc* adc, Rate rate);
-
 private:
-    TimerService const& _timer;
-    std::map<Adc*, Rate> _adcs;
+    bool isDue(Rate rate) const;
 
-    std::map<Rate, std::function<bool()>> const _rates
-    {
-        { Rate::Ms1, [this]() { return _timer.ms1(); } },
-        { Rate::Ms10, [this]() { return _timer.ms10(); } },
-        { Rate::Ms20, [this]() { return _timer.ms20(); } },
-        { Rate::Ms100, [this]() { return _timer.ms100(); } }
-    };
+    AdcEntry* _adcs;
+    size_t _size;
+
+    TimerService const& _timer;
 };
 
 

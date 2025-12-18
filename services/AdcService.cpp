@@ -1,31 +1,39 @@
 
 #include "AdcService.h"
 
-AdcService::AdcService(TimerService const& timer)
-    : _timer(timer)
+AdcService::AdcService(AdcEntry* entries, size_t const size, TimerService const& timer)
+    : _adcs(entries)
+    , _size(size)
+    , _timer(timer)
 {
 }
 
 void AdcService::initialize()
 {
-    for (auto const& adc : _adcs)
+    for (int i = 0; i < _size; i++)
     {
-        adc.first->initialize();
+        _adcs[i].adc->initialize();
     }
 }
 
 void AdcService::update()
 {
-    for (auto const& [adc, rate] : _adcs)
+    for (int i = 0; i < _size; i++)
     {
-        if (_rates.at(rate))
+        if (isDue(_adcs[i].rate))
         {
-            adc->update();
+            _adcs[i].adc->update();
         }
     }
 }
 
-void AdcService::registerAdc(Adc* adc, Rate rate)
+bool AdcService::isDue(Rate const rate) const
 {
-    _adcs.emplace(adc, rate);
+    switch (rate)
+    {
+        case Rate::Ms1: return _timer.ms1();
+        case Rate::Ms10: return _timer.ms10();
+        case Rate::Ms20: return _timer.ms20();
+        case Rate::Ms100: return _timer.ms100();
+    }
 }
