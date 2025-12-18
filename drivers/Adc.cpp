@@ -24,10 +24,6 @@ void Adc::initialize()
 
 void Adc::update()
 {
-}
-
-void Adc::read()
-{
     adc_read_dt(&_spec, &_sequence);
     _readValue = _buffer;
 }

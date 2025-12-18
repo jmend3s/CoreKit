@@ -15,7 +15,6 @@ public:
     void initialize() override;
     void update() override;
 
-    void read();
     int32_t lastReading() const;
 
 private:
