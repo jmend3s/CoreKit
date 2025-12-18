@@ -16,7 +16,7 @@ void Gpio::initialize()
 {
     if (device_is_ready(_spec.port))
     {
-        auto flags = _mode == Mode::Input ? GPIO_INPUT : GPIO_OUTPUT;
+        auto const flags = _mode == Mode::Input ? GPIO_INPUT : GPIO_OUTPUT;
         if (gpio_pin_configure_dt(&_spec, flags) != 0)
         {
             printk("[Gpio] Failed to configure %s pin %u\n",

@@ -13,7 +13,6 @@ void Pwm::initialize()
 
 void Pwm::update()
 {
-    
 }
 
 bool Pwm::setPulseNs(uint32_t const pulseNs) const
