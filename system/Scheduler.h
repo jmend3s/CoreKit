@@ -3,6 +3,7 @@
 #define __SCHEDULER_H__
 
 #include "SchedulableComponent.h"
+#include "TickCounter.h"
 
 #include <cstdlib>
 
@@ -10,15 +11,17 @@
 class Scheduler
 {
 public:
-    Scheduler(SchedulableComponent** components, size_t count);
+    Scheduler(SchedulableComponent** components, uint64_t* lastTickStorage,
+        size_t count, TickCounter& tickCounter);
 
-    void initialize() const;
-    void runOnce() const;
+    void initialize();
+    void runOnce();
 
 private:
     SchedulableComponent** _components;
+    uint64_t* _lastTick;
     size_t _count;
-    uint64_t* _lastRun;
+    TickCounter& _tickCounter;
 };
 
 

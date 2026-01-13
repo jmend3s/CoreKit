@@ -3,35 +3,37 @@
 #include "SystemClock.h"
 
 
-Scheduler::Scheduler(SchedulableComponent** components, size_t count)
+Scheduler::Scheduler(SchedulableComponent** components, uint64_t* lastTickStorage,
+    size_t count, TickCounter& tickCounter
+)
     : _components(components)
+    , _lastTick(lastTickStorage)
     , _count(count)
+    , _tickCounter(tickCounter)
 {
-    _lastRun = static_cast<uint64_t*>(std::calloc(count, sizeof(uint64_t)));
 }
 
-void Scheduler::initialize() const
+void Scheduler::initialize()
 {
+    uint64_t const now = _tickCounter.now();
     for (size_t i = 0; i < _count; i++)
     {
         _components[i]->initialize();
-        _lastRun[i] = SystemClock::nowUs();
+        _lastTick[i] = now;
     }
 }
 
-void Scheduler::runOnce() const
+void Scheduler::runOnce()
 {
-    uint64_t const now = SystemClock::nowUs();
+    uint64_t currentTick = _tickCounter.now();
 
     for (size_t i = 0; i < _count; i++)
     {
-        auto* component = _components[i];
-        uint64_t elapsed = SystemClock::nowUs() - _lastRun[i];
-
-        if (elapsed >= component->periodUs())
+        uint64_t elapsed = currentTick - _lastTick[i];
+        if (elapsed >= _components[i]->periodTicks())
         {
-            component->update();
-            _lastRun[i] = now;
+            _components[i]->update();
+            _lastTick[i] = currentTick;
         }
     }
 }

@@ -9,6 +9,7 @@ class SystemSleep
 {
 public:
     static void sleepUs(uint32_t us);
+    static void sleepUntilUs(uint64_t deadline);
 };
 
 

@@ -4,22 +4,19 @@
 
 #include <cstdint>
 
-#include "Component.h"
 
-
-class Timer : public Component
+class Timer
 {
 public:
-    Timer(uint32_t periodMs);
+    Timer(uint32_t periodTicks);
 
-    void initialize() override;
-    void update() override;
+    void reset(uint32_t currentTick);
+    void update(uint32_t currentTick);
 
     bool elapsed() const;
-    uint32_t period() const;
 
 private:
-    uint32_t _periodMs;
+    uint32_t _periodTicks;
     uint64_t _lastTick;
     bool _elapsed;
 };

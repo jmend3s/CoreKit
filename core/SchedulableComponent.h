@@ -10,7 +10,7 @@
 class SchedulableComponent : public Component
 {
 public:
-    virtual uint32_t periodUs() const = 0;
+    virtual uint32_t periodTicks() const = 0;
 };
 
 

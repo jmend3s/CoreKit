@@ -4,25 +4,24 @@
 #include <zephyr/kernel.h>
 
 
-Timer::Timer(uint32_t const periodMs)
-    : _periodMs(periodMs)
+Timer::Timer(uint32_t periodTicks)
+    : _periodTicks(periodTicks)
     , _lastTick(0)
     , _elapsed(false)
 {
 }
 
-void Timer::initialize()
+void Timer::reset(uint32_t currentTick)
 {
-    _lastTick = k_uptime_get();
+    _lastTick = currentTick;
     _elapsed = false;
 }
 
-void Timer::update()
+void Timer::update(uint32_t currentTick)
 {
-    auto const now = k_uptime_get();
-    if (now - _lastTick >= _periodMs)
+    if (currentTick - _lastTick >= _periodTicks)
     {
-        _lastTick = now;
+        _lastTick = currentTick;
         _elapsed = true;
     }
     else
@@ -34,9 +33,4 @@ void Timer::update()
 bool Timer::elapsed() const
 {
     return _elapsed;
-}
-
-uint32_t Timer::period() const
-{
-    return _periodMs;
 }

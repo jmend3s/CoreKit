@@ -10,7 +10,7 @@ AdcService::AdcService(AdcEntry* entries, size_t const size, TimerService const&
 
 void AdcService::initialize()
 {
-    for (int i = 0; i < _size; i++)
+    for (size_t i = 0; i < _size; i++)
     {
         _adcs[i].adc->initialize();
     }
@@ -18,7 +18,7 @@ void AdcService::initialize()
 
 void AdcService::update()
 {
-    for (int i = 0; i < _size; i++)
+    for (size_t i = 0; i < _size; i++)
     {
         if (isDue(_adcs[i].rate))
         {
