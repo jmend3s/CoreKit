@@ -1,42 +1,22 @@
 
 #include "Application.h"
+#include "SystemSleep.h"
 
 #include <zephyr/kernel.h>
 
 
-Application::Application(Component** components, size_t const count)
-    : _components(components)
-    , _count(count)
+Application::Application(SchedulableComponent** components, size_t count)
+    : _scheduler(components, count)
 {
-}
-
-void Application::initialize() const
-{
-    for (size_t i = 0; i < _count; i++)
-    {
-        _components[i]->initialize();
-    }
-}
-
-void Application::update() const
-{
-    for (size_t i = 0; i < _count; i++)
-    {
-        _components[i]->update();
-    }
 }
 
 void Application::run()
 {
-    initialize();
+    _scheduler.initialize();
 
     while (true)
     {
-        update();
+        _scheduler.runOnce();
+        SystemSleep::sleepUs(100);
     }
-}
-
-void Application::loopSleep()
-{
-    k_msleep(1);
 }

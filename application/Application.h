@@ -2,7 +2,8 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "Component.h"
+#include "SchedulableComponent.h"
+#include "Scheduler.h"
 
 #include <cstdlib>
 
@@ -10,18 +11,12 @@
 class Application
 {
 public:
-    Application(Component** components, size_t count);
-    virtual ~Application() = default;
+    Application(SchedulableComponent** components, size_t count);
 
-    void initialize() const;
-    void update() const;
+    void run();
 
-    virtual void run();
-    virtual void loopSleep();
-
-protected:
-    Component** _components;
-    size_t _count;
+private:
+    Scheduler _scheduler;
 };
 
 
