@@ -1,19 +1,20 @@
 
-#include "../TimerService.h"
+#include "TimerService.h"
+
+#include "SystemTime.h"
 
 
-TimerService::TimerService(TickCounter& _tickCounter)
-    : _tickCounter(_tickCounter)
-    , _1ms(1)
+TimerService::TimerService()
+    : _1ms(1)
     , _10ms(10)
     , _20ms(20)
     , _100ms(100)
-    , _1000ms(1000)
+    , _1000ms(5000)
 {
 }
 void TimerService::initialize()
 {
-    uint32_t now = _tickCounter.now();
+    uint32_t const now = SystemTime::currentTick();
 
     _1ms.reset(now);
     _10ms.reset(now);
@@ -24,7 +25,7 @@ void TimerService::initialize()
 
 void TimerService::update()
 {
-    uint32_t tick = _tickCounter.now();
+    uint32_t const tick = SystemTime::currentTick();
 
     _1ms.update(tick);
     _10ms.update(tick);

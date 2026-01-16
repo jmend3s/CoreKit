@@ -2,18 +2,19 @@
 #include "System.h"
 #include "SystemClock.h"
 #include "SystemSleep.h"
+#include "SystemTime.h"
 
 #include <zephyr/kernel.h>
 
 
-// This should probably not receive lastTickStorage
-System::System(SchedulableComponent** components, uint64_t* lastTickStorage, size_t count)
-    : _scheduler(components, lastTickStorage, count, _tickCounter)
+System::System(SchedulableComponent** components, uint64_t* tickStorage, size_t count)
+    : _scheduler(components, tickStorage, count, _tickCounter)
 {
 }
 
 void System::run()
 {
+    SystemTime::bind(&_tickCounter);
     _scheduler.initialize();
 
     while (true)
@@ -21,7 +22,7 @@ void System::run()
         uint64_t nextTickUs = SystemClock::nowUs();
         _scheduler.runOnce();
 
-        nextTickUs += SystemTick::periodUs();
+        nextTickUs += tickPeriodUs;
         SystemSleep::sleepUntilUs(nextTickUs);
 
         _tickCounter.advance();

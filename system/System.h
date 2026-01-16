@@ -7,26 +7,19 @@
 
 #include <cstdlib>
 
-
 class System
 {
 public:
-    System(SchedulableComponent** components,  uint64_t* lastTickStorage, size_t count);
+    System(SchedulableComponent** components,  uint64_t* tickStorage, size_t count);
 
     void run();
 
 private:
     TickCounter _tickCounter;
     Scheduler _scheduler;
+
+    uint32_t tickPeriodUs = 100;
 };
 
-class SystemTick
-{
-public:
-    static constexpr uint32_t periodUs()
-    {
-        return 100;
-    }
-};
 
 #endif

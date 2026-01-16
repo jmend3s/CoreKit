@@ -4,13 +4,13 @@
 
 #include "Component.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 
 class SchedulableComponent : public Component
 {
 public:
-    virtual uint32_t periodTicks() const = 0;
+    virtual uint32_t periodTick() const = 0;
 };
 
 

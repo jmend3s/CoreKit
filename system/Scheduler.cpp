@@ -1,5 +1,6 @@
 
 #include "Scheduler.h"
+
 #include "SystemClock.h"
 
 
@@ -26,11 +27,10 @@ void Scheduler::initialize()
 void Scheduler::runOnce()
 {
     uint64_t currentTick = _tickCounter.now();
-
     for (size_t i = 0; i < _count; i++)
     {
         uint64_t elapsed = currentTick - _lastTick[i];
-        if (elapsed >= _components[i]->periodTicks())
+        if (elapsed >= _components[i]->periodTick())
         {
             _components[i]->update();
             _lastTick[i] = currentTick;

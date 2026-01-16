@@ -6,10 +6,11 @@
 #include "TickCounter.h"
 #include "TimerTick.h"
 
+
 class TimerService : public SchedulableComponent
 {
 public:
-    TimerService(TickCounter& _tickCounter);
+    TimerService();
 
     void initialize() override;
     void update() override;
@@ -22,13 +23,12 @@ public:
     bool ms1000() const;
 
 private:
-    TickCounter& _tickCounter;
-
     TimerTick _1ms;
     TimerTick _10ms;
     TimerTick _20ms;
     TimerTick _100ms;
     TimerTick _1000ms;
 };
+
 
 #endif

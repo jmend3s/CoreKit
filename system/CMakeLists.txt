@@ -4,5 +4,6 @@ zephyr_library_sources(
     System.cpp
     SystemClock.cpp
     SystemSleep.cpp
+    SystemTime.cpp
     TickCounter.cpp
 )
