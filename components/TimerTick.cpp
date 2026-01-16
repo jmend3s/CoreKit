@@ -1,23 +1,21 @@
 
-#include "Timer.h"
-
-#include <zephyr/kernel.h>
+#include "TimerTick.h"
 
 
-Timer::Timer(uint32_t periodTicks)
+TimerTick::TimerTick(uint32_t const periodTicks)
     : _periodTicks(periodTicks)
     , _lastTick(0)
     , _elapsed(false)
 {
 }
 
-void Timer::reset(uint32_t currentTick)
+void TimerTick::reset(uint32_t const currentTick)
 {
     _lastTick = currentTick;
     _elapsed = false;
 }
 
-void Timer::update(uint32_t currentTick)
+void TimerTick::update(uint32_t const currentTick)
 {
     if (currentTick - _lastTick >= _periodTicks)
     {
@@ -30,7 +28,7 @@ void Timer::update(uint32_t currentTick)
     }
 }
 
-bool Timer::elapsed() const
+bool TimerTick::elapsed() const
 {
     return _elapsed;
 }

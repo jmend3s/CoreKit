@@ -1,5 +1,6 @@
 
-#include "TimerService.h"
+#include "../TimerService.h"
+
 
 TimerService::TimerService(TickCounter& _tickCounter)
     : _tickCounter(_tickCounter)
@@ -7,6 +8,7 @@ TimerService::TimerService(TickCounter& _tickCounter)
     , _10ms(10)
     , _20ms(20)
     , _100ms(100)
+    , _1000ms(1000)
 {
 }
 void TimerService::initialize()
@@ -17,6 +19,7 @@ void TimerService::initialize()
     _10ms.reset(now);
     _20ms.reset(now);
     _100ms.reset(now);
+    _1000ms.reset(now);
 }
 
 void TimerService::update()
@@ -27,9 +30,10 @@ void TimerService::update()
     _10ms.update(tick);
     _20ms.update(tick);
     _100ms.update(tick);
+    _1000ms.update(tick);
 }
 
-uint32_t TimerService::periodTicks() const
+uint32_t TimerService::periodTick() const
 {
     return 1;
 }
@@ -52,4 +56,9 @@ bool TimerService::ms20() const
 bool TimerService::ms100() const
 {
     return _100ms.elapsed();
+}
+
+bool TimerService::ms1000() const
+{
+    return _1000ms.elapsed();
 }

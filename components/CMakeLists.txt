@@ -1,4 +1,5 @@
 
 zephyr_library_sources(
-    Timer.cpp
+    TimerMs.cpp
+    TimerTick.cpp
 )
