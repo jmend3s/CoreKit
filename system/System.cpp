@@ -1,29 +1,35 @@
 
 #include "System.h"
 #include "SystemClock.h"
-#include "SystemSleep.h"
 #include "SystemTime.h"
 
-#include <zephyr/kernel.h>
 
-
-System::System(SchedulableComponent** components, uint64_t* tickStorage, size_t count)
-    : _scheduler(components, tickStorage, count, _tickCounter)
+System::System(SchedulableComponent** components, uint64_t* tickStorage, size_t const count, ISystemTime& time)
+    :  _time(time)
+    ,  _scheduler(components, tickStorage, count, _tickCounter)
 {
+}
+
+void System::initialize()
+{
+    SystemClock::bind(&_tickCounter);
+    _scheduler.initialize();
 }
 
 void System::run()
 {
-    SystemTime::bind(&_tickCounter);
-    _scheduler.initialize();
+    initialize();
 
+    uint64_t nextTickUs = _time.now();
     while (true)
     {
-        uint64_t nextTickUs = SystemClock::nowUs();
         _scheduler.runOnce();
 
-        nextTickUs += tickPeriodUs;
-        SystemSleep::sleepUntilUs(nextTickUs);
+        nextTickUs += _tickPeriodUs;
+        if (_time.now() < nextTickUs)
+        {
+            _time.sleep(static_cast<uint32_t>(nextTickUs - _time.now()));
+        }
 
         _tickCounter.advance();
     }

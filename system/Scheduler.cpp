@@ -5,7 +5,7 @@
 
 
 Scheduler::Scheduler(SchedulableComponent** components, uint64_t* lastTickStorage,
-    size_t count, TickCounter& tickCounter
+    size_t const count, TickCounter& tickCounter
 )
     : _components(components)
     , _lastTick(lastTickStorage)
@@ -26,10 +26,10 @@ void Scheduler::initialize()
 
 void Scheduler::runOnce()
 {
-    uint64_t currentTick = _tickCounter.now();
+    uint64_t const currentTick = _tickCounter.now();
     for (size_t i = 0; i < _count; i++)
     {
-        uint64_t elapsed = currentTick - _lastTick[i];
+        uint64_t const elapsed = currentTick - _lastTick[i];
         if (elapsed >= _components[i]->periodTick())
         {
             _components[i]->update();

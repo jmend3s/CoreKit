@@ -1,9 +1,9 @@
 
 zephyr_library_sources(
+    ISystemTime.cpp
     Scheduler.cpp
     System.cpp
     SystemClock.cpp
-    SystemSleep.cpp
     SystemTime.cpp
     TickCounter.cpp
 )

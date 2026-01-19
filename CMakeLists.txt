@@ -11,6 +11,7 @@ zephyr_include_directories(
     drivers
     services
     system
+    tests
 )
 
 add_subdirectory(components)
@@ -18,3 +19,4 @@ add_subdirectory(core)
 add_subdirectory(drivers)
 add_subdirectory(services)
 add_subdirectory(system)
+add_subdirectory(tests)

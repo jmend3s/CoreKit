@@ -4,7 +4,14 @@
 #include <zephyr/kernel.h>
 
 
-uint64_t SystemClock::nowUs()
+TickCounter* SystemClock::_tickCounter = nullptr;
+
+uint32_t SystemClock::currentTick()
 {
-    return k_ticks_to_us_floor64(k_uptime_ticks());
+    return _tickCounter->now();
+}
+
+void SystemClock::bind(TickCounter* counter)
+{
+    _tickCounter = counter;
 }
