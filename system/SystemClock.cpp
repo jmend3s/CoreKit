@@ -1,8 +1,6 @@
 
 #include "SystemClock.h"
 
-#include <zephyr/kernel.h>
-
 
 TickCounter* SystemClock::_tickCounter = nullptr;
 

@@ -23,14 +23,18 @@ void System::run()
     uint64_t nextTickUs = _time.now();
     while (true)
     {
-        _scheduler.runOnce();
+        runOnce();
 
         nextTickUs += _tickPeriodUs;
         if (_time.now() < nextTickUs)
         {
             _time.sleep(static_cast<uint32_t>(nextTickUs - _time.now()));
         }
-
-        _tickCounter.advance();
     }
+}
+
+void System::runOnce()
+{
+    _scheduler.runOnce();
+    _tickCounter.advance();
 }

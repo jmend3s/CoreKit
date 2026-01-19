@@ -14,6 +14,7 @@ public:
 
     void initialize();
     void run();
+    void runOnce();
 
 private:
     ISystemTime& _time;
