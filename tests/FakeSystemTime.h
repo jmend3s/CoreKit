@@ -12,6 +12,8 @@ public:
     void sleep(uint32_t duration) override;
     void advance(uint64_t period);
 
+    uint64_t slept_us = 0;
+
 private:
     uint64_t _now = 0;
 };

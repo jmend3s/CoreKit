@@ -9,6 +9,7 @@ uint64_t FakeSystemTime::now() const
 
 void FakeSystemTime::sleep(uint32_t const duration)
 {
+    slept_us += duration;
     _now += duration;
 }
 
