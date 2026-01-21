@@ -4,7 +4,7 @@
 #include "SystemClock.h"
 
 
-Scheduler::Scheduler(SchedulableComponent** components, uint64_t* lastTickStorage,
+Scheduler::Scheduler(Component** components, uint64_t* lastTickStorage,
     size_t const count, TickCounter& tickCounter
 )
     : _components(components)
@@ -30,7 +30,7 @@ void Scheduler::runOnce()
     for (size_t i = 0; i < _count; i++)
     {
         uint64_t const elapsed = currentTick - _lastTick[i];
-        if (elapsed >= _components[i]->periodTick())
+        if (elapsed >= _components[i]->period())
         {
             _components[i]->update();
             _lastTick[i] = currentTick;

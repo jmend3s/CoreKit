@@ -2,19 +2,19 @@
 #ifndef __TIMER_SERVICE_H__
 #define __TIMER_SERVICE_H__
 
-#include "SchedulableComponent.h"
+#include "Component.h"
 #include "TickCounter.h"
 #include "Timer.h"
 
 
-class TimerService : public SchedulableComponent
+class TimerService : public Component
 {
 public:
     TimerService();
 
     void initialize() override;
     void update() override;
-    uint32_t periodTick() const override;
+    uint32_t period() const override;
 
     bool ms1() const;
     bool ms10() const;

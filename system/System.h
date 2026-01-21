@@ -3,14 +3,14 @@
 #define __SYSTEM_H__
 
 #include "ISystemTime.h"
-#include "SchedulableComponent.h"
+#include "Component.h"
 #include "../scheduler/Scheduler.h"
 
 
 class System
 {
 public:
-    System(SchedulableComponent** components,  uint64_t* tickStorage, size_t count, ISystemTime& time, uint32_t tickPeriodUs = 100);
+    System(Component** components,  uint64_t* tickStorage, size_t count, ISystemTime& time, uint32_t tickPeriodUs = 100);
 
     void initialize();
     void run();

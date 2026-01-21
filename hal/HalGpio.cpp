@@ -4,6 +4,11 @@
 #include <zephyr/drivers/gpio.h>
 
 
+static const gpio_dt_spec* toDt(HalGpio::Spec& spec)
+{
+    return reinterpret_cast<gpio_dt_spec const*>(spec.spec());
+}
+
 HalGpio::HalGpio(Spec& spec)
     : _spec(spec)
 {
@@ -11,26 +16,26 @@ HalGpio::HalGpio(Spec& spec)
 
 bool HalGpio::isReady()
 {
-    return device_is_ready(static_cast<gpio_dt_spec const*>(_spec.dt)->port);
+    return device_is_ready(toDt(_spec)->port);
 }
 
 int HalGpio::pinConfigure(bool mode)
 {
     auto const flags = mode ? GPIO_INPUT : GPIO_OUTPUT;
-    return gpio_pin_configure_dt(static_cast<gpio_dt_spec const*>(_spec.dt), flags);
+    return gpio_pin_configure_dt(toDt(_spec), flags);
 }
 
 int HalGpio::pinSet(bool set)
 {
-    return gpio_pin_set_dt(static_cast<gpio_dt_spec const*>(_spec.dt), set);
+    return gpio_pin_set_dt(toDt(_spec), set);
 }
 
 int HalGpio::toggle()
 {
-    return gpio_pin_toggle_dt(static_cast<const gpio_dt_spec*>(_spec.dt));
+    return gpio_pin_toggle_dt(toDt(_spec));
 }
 
 int HalGpio::read() const
 {
-    return gpio_pin_get_dt(static_cast<gpio_dt_spec const*>(_spec.dt));
+    return gpio_pin_get_dt(toDt(_spec));
 }

@@ -2,11 +2,17 @@
 #ifndef __HAL_GPIO_H__
 #define __HAL_GPIO_H__
 
+#include "HalSpecHandle.h"
+
 
 class HalGpio
 {
 public:
-    struct Spec { void* dt; };
+    class Spec : public HalSpecHandle
+    {
+        public:
+            using HalSpecHandle::HalSpecHandle;
+    };
 
     HalGpio(Spec& spec);
 

@@ -34,7 +34,7 @@ void TimerService::update()
     _1000ms.update(tick);
 }
 
-uint32_t TimerService::periodTick() const
+uint32_t TimerService::period() const
 {
     return 1;
 }

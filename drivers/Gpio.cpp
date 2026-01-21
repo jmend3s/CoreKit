@@ -2,23 +2,22 @@
 #include "Gpio.h"
 
 
-Gpio::Gpio(GpioSpec& spec, Mode mode)
+Gpio::Gpio(GpioSpec& spec, Mode const mode)
     : _mode(mode)
     , _state(State::Low)
     , _hal(spec)
 {
 }
 
-void Gpio::initialize()
+bool Gpio::configure()
 {
+    bool configured = false;
     if (_hal.isReady())
     {
         _hal.pinConfigure(_mode == Mode::Input);
+        configured = true;
     }
-}
-
-void Gpio::update()
-{
+    return configured;
 }
 
 void Gpio::set(State const state)
