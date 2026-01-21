@@ -1,33 +1,25 @@
 
 #include "Pwm.h"
 
-Pwm::Pwm(pwm_dt_spec const& spec)
-    : _spec(spec)
+
+Pwm::Pwm(PwmSpec& spec)
+    : _hal(spec)
 {
 }
 
-void Pwm::initialize()
+bool Pwm::setPulseNs(uint32_t const pulseNs)
 {
-    pwm_is_ready_dt(&_spec);
-}
-
-void Pwm::update()
-{
-}
-
-bool Pwm::setPulseNs(uint32_t const pulseNs) const
-{
-    auto const error = pwm_set_dt(&_spec, _spec.period, pulseNs);
+    auto const error = _hal.setPulse(pulseNs);
     return error == 0;
 }
 
-bool Pwm::setPulseUs(uint32_t const pulseUs) const
+bool Pwm::setPulseUs(uint32_t const pulseUs)
 {
     uint32_t const pulseNs = pulseUs * 1000U;
     return setPulseNs(pulseNs);
 }
 
-bool Pwm::setDutyCycle(float duty) const
+bool Pwm::setDutyCycle(float duty)
 {
     if (duty < 0.0f)
     {
@@ -38,13 +30,13 @@ bool Pwm::setDutyCycle(float duty) const
         duty = 1.0f;
     }
 
-    auto const temp = duty * static_cast<float>(_spec.period);
+    auto const temp = duty * static_cast<float>(periodNs());
     auto const pulseNs = static_cast<uint32_t>(temp);
 
     return setPulseNs(pulseNs);
 }
 
-uint32_t Pwm::periodNs() const
+uint32_t Pwm::periodNs()
 {
-    return _spec.period;
+    return _hal.period();
 }
