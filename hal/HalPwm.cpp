@@ -4,7 +4,7 @@
 #include <zephyr/drivers/pwm.h>
 
 
-static const pwm_dt_spec* toDt(HalPwm::Spec& spec)
+static pwm_dt_spec const* toDt(HalPwm::Spec& spec)
 {
     return reinterpret_cast<pwm_dt_spec const*>(spec.spec());
 }

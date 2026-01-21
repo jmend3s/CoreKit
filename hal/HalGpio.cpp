@@ -4,7 +4,7 @@
 #include <zephyr/drivers/gpio.h>
 
 
-static const gpio_dt_spec* toDt(HalGpio::Spec& spec)
+static gpio_dt_spec const* toDt(HalGpio::Spec& spec)
 {
     return reinterpret_cast<gpio_dt_spec const*>(spec.spec());
 }

@@ -22,7 +22,7 @@ void AdcService::update()
     {
         if (isDue(_adcs[i].rate))
         {
-            _adcs[i].adc->update();
+            _adcs[i].adc->read();
         }
     }
 }

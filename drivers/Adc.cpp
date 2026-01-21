@@ -1,31 +1,23 @@
 
 #include "Adc.h"
 
-Adc::Adc(adc_dt_spec const& spec)
-    : _spec(spec)
-    , _buffer(0)
+Adc::Adc(AdcSpec& spec)
+    : _hal(spec)
 {
 }
 
 void Adc::initialize()
 {
-    adc_is_ready_dt(&_spec);
-    adc_channel_setup_dt(&_spec);
-
-    adc_sequence const sequence
+    if (_hal.isReady())
     {
-        .buffer = &_buffer,
-        .buffer_size = sizeof(_buffer)
-    };
-
-    _sequence = sequence;
-    adc_sequence_init_dt(&_spec, &_sequence);
+        _hal.channelSetup();
+        _hal.sequenceInit();
+    }
 }
 
-void Adc::update()
+void Adc::read()
 {
-    adc_read_dt(&_spec, &_sequence);
-    _readValue = _buffer;
+    _readValue = _hal.read();
 }
 
 int32_t Adc::lastReading() const
