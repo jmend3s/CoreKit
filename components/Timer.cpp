@@ -1,21 +1,21 @@
 
-#include "TimerTick.h"
+#include "Timer.h"
 
 
-TimerTick::TimerTick(uint32_t const periodTicks)
+Timer::Timer(uint32_t const periodTicks)
     : _periodTicks(periodTicks)
     , _lastTick(0)
     , _elapsed(false)
 {
 }
 
-void TimerTick::reset(uint32_t const currentTick)
+void Timer::reset(uint32_t const currentTick)
 {
     _lastTick = currentTick;
     _elapsed = false;
 }
 
-void TimerTick::update(uint32_t const currentTick)
+void Timer::update(uint32_t const currentTick)
 {
     if (currentTick - _lastTick >= _periodTicks)
     {
@@ -28,7 +28,7 @@ void TimerTick::update(uint32_t const currentTick)
     }
 }
 
-bool TimerTick::elapsed() const
+bool Timer::elapsed() const
 {
     return _elapsed;
 }

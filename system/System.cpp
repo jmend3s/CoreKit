@@ -4,7 +4,8 @@
 #include "SystemTime.h"
 
 
-System::System(SchedulableComponent** components, uint64_t* tickStorage, size_t const count, ISystemTime& time, uint32_t tickPeriodUs)
+System::System(SchedulableComponent** components, uint64_t* tickStorage, size_t const count,
+    ISystemTime& time, uint32_t const tickPeriodUs)
     :  _time(time)
     ,  _scheduler(components, tickStorage, count, _tickCounter)
     , _tickPeriodUs(tickPeriodUs)

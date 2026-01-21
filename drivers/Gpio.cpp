@@ -1,31 +1,19 @@
 
 #include "Gpio.h"
 
-#include <zephyr/drivers/gpio.h>
-#include <zephyr/sys/printk.h>
 
-
-Gpio::Gpio(gpio_dt_spec const& spec, Mode mode)
-    : _spec(spec)
-    , _mode(mode)
+Gpio::Gpio(GpioSpec& spec, Mode mode)
+    : _mode(mode)
     , _state(State::Low)
+    , _hal(spec)
 {
 }
 
 void Gpio::initialize()
 {
-    if (device_is_ready(_spec.port))
+    if (_hal.isReady())
     {
-        auto const flags = _mode == Mode::Input ? GPIO_INPUT : GPIO_OUTPUT;
-        if (gpio_pin_configure_dt(&_spec, flags) != 0)
-        {
-            printk("[Gpio] Failed to configure %s pin %u\n",
-               _spec.port->name, _spec.pin);
-        }
-    }
-    else
-    {
-        printk("[Gpio] Device not ready: %s\n", _spec.port->name);
+        _hal.pinConfigure(_mode == Mode::Input);
     }
 }
 
@@ -38,7 +26,7 @@ void Gpio::set(State const state)
     if (_mode == Mode::Output)
     {
         _state = state;
-        gpio_pin_set_dt(&_spec, (state == State::High) ? 1 : 0);
+        _hal.pinSet(state == State::High);
     }
 }
 
@@ -46,12 +34,12 @@ void Gpio::toggle()
 {
     if (_mode == Mode::Output)
     {
-        gpio_pin_toggle_dt(&_spec);
+        _hal.toggle();
         _state = _state == State::Low ? State::High : State::Low;
     }
 }
 
 Gpio::State Gpio::read() const
 {
-    return gpio_pin_get_dt(&_spec) ? State::High : State::Low;
+    return _hal.read() ? State::High : State::Low;
 }

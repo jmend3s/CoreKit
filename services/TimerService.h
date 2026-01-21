@@ -4,7 +4,7 @@
 
 #include "SchedulableComponent.h"
 #include "TickCounter.h"
-#include "TimerTick.h"
+#include "Timer.h"
 
 
 class TimerService : public SchedulableComponent
@@ -23,11 +23,11 @@ public:
     bool ms1000() const;
 
 private:
-    TimerTick _1ms;
-    TimerTick _10ms;
-    TimerTick _20ms;
-    TimerTick _100ms;
-    TimerTick _1000ms;
+    Timer _1ms;
+    Timer _10ms;
+    Timer _20ms;
+    Timer _100ms;
+    Timer _1000ms;
 };
 
 

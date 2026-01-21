@@ -1,13 +1,14 @@
-#ifndef __TIMER_TICK_H__
-#define __TIMER_TICK_H__
+
+#ifndef __TIMER_H__
+#define __TIMER_H__
 
 #include <cstdint>
 
 
-class TimerTick
+class Timer
 {
 public:
-    TimerTick(uint32_t periodTicks);
+    Timer(uint32_t periodTicks);
 
     void reset(uint32_t currentTick);
     void update(uint32_t currentTick);
