@@ -5,7 +5,7 @@
 #include "HalGpio.h"
 
 
-using GpioSpec = HalGpio::Spec;
+using GpioSpec = HalGpio::SpecHandle;
 class Gpio
 {
 public:

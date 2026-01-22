@@ -9,8 +9,7 @@ class HalSpecHandle
 {
 public:
     constexpr HalSpecHandle(uintptr_t const spec) : _spec(spec) {}
-
-    uintptr_t spec();
+    uintptr_t spec() { return _spec; }
 
 private:
     uintptr_t _spec;

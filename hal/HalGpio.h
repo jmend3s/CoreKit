@@ -8,13 +8,13 @@
 class HalGpio
 {
 public:
-    class Spec : public HalSpecHandle
+    class SpecHandle : public HalSpecHandle
     {
         public:
             using HalSpecHandle::HalSpecHandle;
     };
 
-    HalGpio(Spec& spec);
+    HalGpio(SpecHandle& spec);
 
     bool isReady();
     int pinConfigure(bool mode);
@@ -23,7 +23,7 @@ public:
     int read() const;
 
 private:
-    Spec& _spec;
+    SpecHandle& _spec;
 };
 
 

@@ -14,7 +14,7 @@ bool Gpio::configure()
     bool configured = false;
     if (_hal.isReady())
     {
-        _hal.pinConfigure(_mode == Mode::Input);
+        _hal.pinConfigure(_mode == Mode::Output);
         configured = true;
     }
     return configured;
