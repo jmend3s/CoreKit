@@ -1,6 +1,6 @@
 
 #include "HalGpio.h"
-#include "HalGpioFake.h"
+#include "FakeHalGpio.h"
 
 
 static FakeGpioState* stateFrom(HalGpio::SpecHandle& handle)
