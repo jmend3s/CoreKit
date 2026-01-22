@@ -6,20 +6,27 @@
 
 struct HalAdc::Sequence
 {
-    adc_sequence sequence;
+    adc_sequence sequence {};
     int16_t buffer = 0;
 };
 
-static adc_dt_spec const* toDt(HalAdc::Spec& spec)
+static adc_dt_spec const* toDt(HalAdc::SpecHandle& spec)
 {
     return reinterpret_cast<adc_dt_spec const*>(spec.spec());
 }
 
-HalAdc::HalAdc(Spec& spec)
+HalAdc::HalAdc(SpecHandle& spec)
     : _spec(spec)
+    , _sequence(new Sequence{})
 {
-    static Sequence sequence;
-    _sequence = &sequence;
+    _sequence->sequence = {};
+    _sequence->sequence.buffer = 0;
+    _sequence->sequence.buffer_size = 0;
+}
+
+HalAdc::~HalAdc()
+{
+    delete _sequence;
 }
 
 bool HalAdc::isReady() const

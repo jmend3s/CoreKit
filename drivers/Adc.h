@@ -5,7 +5,7 @@
 #include "HalAdc.h"
 
 
-using AdcSpec = HalAdc::Spec;
+using AdcSpec = HalAdc::SpecHandle;
 class Adc
 {
 public:

@@ -9,13 +9,17 @@
 class HalAdc
 {
 public:
-    class Spec : public HalSpecHandle
+    class SpecHandle : public HalSpecHandle
     {
         public:
             using HalSpecHandle::HalSpecHandle;
     };
 
-    HalAdc(Spec& spec);
+    HalAdc(SpecHandle& spec);
+    ~HalAdc();
+
+    HalAdc(const HalAdc&) = delete;
+    HalAdc& operator=(const HalAdc&) = delete;
 
     bool isReady() const;
     int channelSetup() const;
@@ -25,7 +29,7 @@ public:
 private:
     struct Sequence;
 
-    Spec& _spec;
+    SpecHandle& _spec;
     Sequence* _sequence;
 };
 
