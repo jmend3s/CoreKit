@@ -8,19 +8,19 @@
 class HalSpi
 {
 public:
-    class Spec : public HalSpecHandle
+    class SpecHandle : public HalSpecHandle
     {
     public:
         using HalSpecHandle::HalSpecHandle;
     };
 
-    HalSpi(Spec& spec);
+    HalSpi(SpecHandle& spec);
 
     bool isReady();
     int transceive(uint8_t* tx, uint8_t* rx, uint16_t size);
 
 private:
-    Spec _spec;
+    SpecHandle _spec;
 };
 
 

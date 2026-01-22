@@ -5,7 +5,7 @@
 #include "HalSpi.h"
 
 
-using SpiSpec = HalSpi::Spec;
+using SpiSpec = HalSpi::SpecHandle;
 class Spi
 {
 public:

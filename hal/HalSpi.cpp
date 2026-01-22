@@ -4,12 +4,12 @@
 #include <zephyr/drivers/spi.h>
 
 
-static spi_dt_spec const* toDt(HalSpi::Spec& spec)
+static spi_dt_spec const* toDt(HalSpi::SpecHandle& spec)
 {
     return reinterpret_cast<spi_dt_spec const*>(spec.spec());
 }
 
-HalSpi::HalSpi(Spec& spec)
+HalSpi::HalSpi(SpecHandle& spec)
     : _spec(spec)
 {
 }
