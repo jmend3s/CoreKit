@@ -27,6 +27,11 @@ void AdcService::update()
     }
 }
 
+uint32_t AdcService::period() const
+{
+    return 1;
+}
+
 bool AdcService::isDue(Rate const rate) const
 {
     switch (rate)

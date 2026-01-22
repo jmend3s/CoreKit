@@ -10,7 +10,8 @@
 class System
 {
 public:
-    System(Component** components,  uint64_t* tickStorage, size_t count, ISystemTime& time, uint32_t tickPeriodUs = 100);
+    System(Component** components,  uint64_t* tickStorage, size_t count, ISystemTime& time,
+        uint32_t tickPeriodUs = 100);
 
     void initialize();
     void run();

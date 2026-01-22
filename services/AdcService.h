@@ -3,8 +3,10 @@
 #define __ADC_SERVICE_H__
 
 #include "Component.h"
-#include "Adc.h"
 #include "TimerService.h"
+#include "Adc.h"
+
+#include <cstddef>
 
 
 class AdcService : public Component
@@ -22,6 +24,7 @@ public:
 
     void initialize() override;
     void update() override;
+    uint32_t period() const override;
 
 private:
     bool isDue(Rate rate) const;
