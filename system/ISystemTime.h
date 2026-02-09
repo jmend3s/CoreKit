@@ -10,7 +10,7 @@ class ISystemTime
 public:
     virtual ~ISystemTime() = default;
 
-    virtual  uint64_t now() const = 0;
+    virtual uint64_t now() const = 0;
     virtual void sleep(uint32_t duration) = 0;
 };
 
