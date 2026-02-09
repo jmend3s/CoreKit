@@ -4,7 +4,7 @@
 
 #include "ISystemTime.h"
 #include "Component.h"
-#include "../scheduler/Scheduler.h"
+#include "Scheduler.h"
 
 
 class System
