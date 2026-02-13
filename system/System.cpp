@@ -18,7 +18,7 @@ void System::initialize()
     _scheduler.initialize();
 }
 
-void System::run()
+void System:: run()
 {
     initialize();
 
