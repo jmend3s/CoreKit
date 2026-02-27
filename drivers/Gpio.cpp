@@ -25,7 +25,7 @@ void Gpio::set(State const state)
     if (_mode == Mode::Output)
     {
         _state = state;
-        _hal.pinSet(state == State::High);
+        _hal.pinSet(state == State::Low);
     }
 }
 
