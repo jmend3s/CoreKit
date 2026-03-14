@@ -13,7 +13,7 @@ zephyr_include_directories(
     scheduler
     services
     system
-    tests
+    test
 )
 
 add_subdirectory(components)
@@ -23,4 +23,4 @@ add_subdirectory(hal)
 add_subdirectory(scheduler)
 add_subdirectory(services)
 add_subdirectory(system)
-add_subdirectory(tests)
+add_subdirectory(test)
