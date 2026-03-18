@@ -1,12 +1,12 @@
 
-#ifndef __HAL_ADC_H__
-#define __HAL_ADC_H__
+#ifndef __ADC_WRAPPER_H__
+#define __ADC_WRAPPER_H__
 
 
 #include "HalSpecHandle.h"
 
 
-class HalAdc
+class AdcWrapper
 {
 public:
     class SpecHandle : public HalSpecHandle
@@ -15,11 +15,11 @@ public:
             using HalSpecHandle::HalSpecHandle;
     };
 
-    HalAdc(SpecHandle& spec);
-    ~HalAdc();
+    AdcWrapper(SpecHandle& spec);
+    ~AdcWrapper();
 
-    HalAdc(const HalAdc&) = delete;
-    HalAdc& operator=(const HalAdc&) = delete;
+    AdcWrapper(const AdcWrapper&) = delete;
+    AdcWrapper& operator=(const AdcWrapper&) = delete;
 
     bool isReady() const;
     int channelSetup() const;

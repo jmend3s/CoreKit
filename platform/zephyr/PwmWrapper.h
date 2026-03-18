@@ -1,13 +1,13 @@
 
-#ifndef __HAL_PWM_H__
-#define __HAL_PWM_H__
+#ifndef __PWM_WRAPPER_H__
+#define __PWM_WRAPPER_H__
 
 #include "HalSpecHandle.h"
 
 #include <cstdint>
 
 
-class HalPwm
+class PwmWrapper
 {
 public:
     class Spec : public HalSpecHandle
@@ -16,7 +16,7 @@ public:
             using HalSpecHandle::HalSpecHandle;
     };
 
-    HalPwm(Spec& spec);
+    PwmWrapper(Spec& spec);
 
     bool isReady();
     int setPulse(uint32_t pulseNs);

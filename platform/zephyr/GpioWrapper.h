@@ -1,11 +1,11 @@
 
-#ifndef __HAL_GPIO_H__
-#define __HAL_GPIO_H__
+#ifndef __HAL_WRAPPER_H__
+#define __HAL_WRAPPER_H__
 
 #include "HalSpecHandle.h"
 
 
-class HalGpio
+class GpioWrapper
 {
 public:
     class SpecHandle : public HalSpecHandle
@@ -14,7 +14,7 @@ public:
             using HalSpecHandle::HalSpecHandle;
     };
 
-    HalGpio(SpecHandle& spec);
+    GpioWrapper(SpecHandle& spec);
 
     bool isReady();
     int pinConfigure(bool mode);

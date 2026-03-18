@@ -1,21 +1,20 @@
 
-#include "HalAdc.h"
-
+#include "AdcWrapper.h"
 #include <zephyr/drivers/adc.h>
 
 
-struct HalAdc::Sequence
+struct AdcWrapper::Sequence
 {
     adc_sequence sequence {};
     int16_t buffer = 0;
 };
 
-static adc_dt_spec const* toDt(HalAdc::SpecHandle& spec)
+static adc_dt_spec const* toDt(AdcWrapper::SpecHandle& spec)
 {
     return reinterpret_cast<adc_dt_spec const*>(spec.spec());
 }
 
-HalAdc::HalAdc(SpecHandle& spec)
+AdcWrapper::AdcWrapper(SpecHandle& spec)
     : _spec(spec)
     , _sequence(new Sequence{})
 {
@@ -24,22 +23,22 @@ HalAdc::HalAdc(SpecHandle& spec)
     _sequence->sequence.buffer_size = 0;
 }
 
-HalAdc::~HalAdc()
+AdcWrapper::~AdcWrapper()
 {
     delete _sequence;
 }
 
-bool HalAdc::isReady() const
+bool AdcWrapper::isReady() const
 {
     return adc_is_ready_dt(toDt(_spec));
 }
 
-int HalAdc::channelSetup() const
+int AdcWrapper::channelSetup() const
 {
     return adc_channel_setup_dt(toDt(_spec));
 }
 
-int HalAdc::sequenceInit()
+int AdcWrapper::sequenceInit()
 {
     _sequence->sequence = {
         .buffer = &_sequence->buffer,
@@ -49,7 +48,7 @@ int HalAdc::sequenceInit()
     return adc_sequence_init_dt(toDt(_spec), &_sequence->sequence);
 }
 
-int32_t HalAdc::read() const
+int32_t AdcWrapper::read() const
 {
     adc_read_dt(toDt(_spec), &_sequence->sequence);
     return _sequence->buffer;

@@ -1,11 +1,11 @@
 
-#ifndef __HAL_SPI_H__
-#define __HAL_SPI_H__
+#ifndef __SPI_WRAPPER_H__
+#define __SPI_WRAPPER_H__
 
 #include "HalSpecHandle.h"
 
 
-class HalSpi
+class SpiWrapper
 {
 public:
     class SpecHandle : public HalSpecHandle
@@ -14,7 +14,7 @@ public:
         using HalSpecHandle::HalSpecHandle;
     };
 
-    HalSpi(SpecHandle& spec);
+    SpiWrapper(SpecHandle& spec);
 
     bool isReady();
     int transceive(uint8_t* tx, uint8_t* rx, uint16_t size);

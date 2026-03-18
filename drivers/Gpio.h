@@ -2,10 +2,10 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
-#include "HalGpio.h"
+#include "zephyr/GpioWrapper.h"
 
 
-using GpioSpec = HalGpio::SpecHandle;
+using GpioSpec = GpioWrapper::SpecHandle;
 class Gpio
 {
 public:
@@ -25,7 +25,7 @@ private:
     Mode _mode;
     State _state;
 
-    HalGpio _hal;
+    GpioWrapper _hal;
 };
 
 

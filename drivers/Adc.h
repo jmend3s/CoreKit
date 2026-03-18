@@ -2,10 +2,10 @@
 #ifndef __ADC_H__
 #define __ADC_H__
 
-#include "HalAdc.h"
+#include "zephyr/AdcWrapper.h"
 
 
-using AdcSpec = HalAdc::SpecHandle;
+using AdcSpec = AdcWrapper::SpecHandle;
 class Adc
 {
 public:
@@ -18,7 +18,7 @@ public:
 
 private:
     int32_t _readValue;
-    HalAdc _hal;
+    AdcWrapper _hal;
 };
 
 #endif

@@ -9,7 +9,7 @@ zephyr_include_directories(
     components
     core
     drivers
-    hal
+    platform
     scheduler
     services
     system
@@ -19,7 +19,7 @@ zephyr_include_directories(
 add_subdirectory(components)
 add_subdirectory(core)
 add_subdirectory(drivers)
-add_subdirectory(hal)
+add_subdirectory(platform)
 add_subdirectory(scheduler)
 add_subdirectory(services)
 add_subdirectory(system)

@@ -2,10 +2,10 @@
 #ifndef __SPI_H__
 #define __SPI_H__
 
-#include "HalSpi.h"
+#include "zephyr/SpiWrapper.h"
 
 
-using SpiSpec = HalSpi::SpecHandle;
+using SpiSpec = SpiWrapper::SpecHandle;
 class Spi
 {
 public:
@@ -16,7 +16,7 @@ public:
     bool transceive(uint8_t* tx, uint8_t* rx, uint16_t size);
 
 private:
-    HalSpi _hal;
+    SpiWrapper _hal;
 };
 
 #endif
