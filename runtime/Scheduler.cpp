@@ -1,7 +1,7 @@
 
 #include "Scheduler.h"
 
-#include "SystemClock.h"
+#include "Clock.h"
 
 
 Scheduler::Scheduler(Component** components, uint64_t* lastTickStorage,

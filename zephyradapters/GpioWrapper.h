@@ -1,6 +1,6 @@
 
-#ifndef __HAL_WRAPPER_H__
-#define __HAL_WRAPPER_H__
+#ifndef __GPIO_WRAPPER_H__
+#define __GPIO_WRAPPER_H__
 
 #include "HalSpecHandle.h"
 

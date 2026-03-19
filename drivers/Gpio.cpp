@@ -2,43 +2,43 @@
 #include "Gpio.h"
 
 
-Gpio::Gpio(GpioSpec& spec, Mode const mode)
+Gpio::Gpio(GpioSpec& spec, GpioMode const mode)
     : _mode(mode)
-    , _state(State::Low)
-    , _hal(spec)
+    , _state(GpioState::Low)
+    , _gpio(spec)
 {
 }
 
 bool Gpio::configure()
 {
     bool configured = false;
-    if (_hal.isReady())
+    if (_gpio.isReady())
     {
-        _hal.pinConfigure(_mode == Mode::Output);
+        _gpio.pinConfigure(_mode == GpioMode::Output);
         configured = true;
     }
     return configured;
 }
 
-void Gpio::set(State const state)
+void Gpio::set(GpioState const state)
 {
-    if (_mode == Mode::Output)
+    if (_mode == GpioMode::Output)
     {
         _state = state;
-        _hal.pinSet(state == State::Low);
+        _gpio.pinSet(state == GpioState::Low);
     }
 }
 
 void Gpio::toggle()
 {
-    if (_mode == Mode::Output)
+    if (_mode == GpioMode::Output)
     {
-        _hal.toggle();
-        _state = _state == State::Low ? State::High : State::Low;
+        _gpio.toggle();
+        _state = _state == GpioState::Low ? GpioState::High : GpioState::Low;
     }
 }
 
-Gpio::State Gpio::read() const
+GpioState Gpio::read() const
 {
-    return _hal.read() ? State::High : State::Low;
+    return _gpio.read() ? GpioState::High : GpioState::Low;
 }

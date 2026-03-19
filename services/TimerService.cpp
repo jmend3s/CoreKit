@@ -1,7 +1,7 @@
 
 #include "TimerService.h"
 
-#include "SystemClock.h"
+#include "Clock.h"
 
 
 TimerService::TimerService()
@@ -14,7 +14,7 @@ TimerService::TimerService()
 }
 void TimerService::initialize()
 {
-    uint32_t const now = SystemClock::currentTick();
+    uint32_t const now = Clock::currentTick();
 
     _1ms.reset(now);
     _10ms.reset(now);
@@ -25,7 +25,7 @@ void TimerService::initialize()
 
 void TimerService::update()
 {
-    uint32_t const tick = SystemClock::currentTick();
+    uint32_t const tick = Clock::currentTick();
 
     _1ms.update(tick);
     _10ms.update(tick);

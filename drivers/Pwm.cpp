@@ -3,13 +3,13 @@
 
 
 Pwm::Pwm(PwmSpec& spec)
-    : _hal(spec)
+    : _pwm(spec)
 {
 }
 
 bool Pwm::setPulseNs(uint32_t const pulseNs)
 {
-    auto const error = _hal.setPulse(pulseNs);
+    auto const error = _pwm.setPulse(pulseNs);
     return error == 0;
 }
 
@@ -38,5 +38,5 @@ bool Pwm::setDutyCycle(float duty)
 
 uint32_t Pwm::periodNs()
 {
-    return _hal.period();
+    return _pwm.period();
 }

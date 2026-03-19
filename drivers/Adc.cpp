@@ -2,22 +2,22 @@
 #include "Adc.h"
 
 Adc::Adc(AdcSpec& spec)
-    : _hal(spec)
+    : _adc(spec)
 {
 }
 
 void Adc::initialize()
 {
-    if (_hal.isReady())
+    if (_adc.isReady())
     {
-        _hal.channelSetup();
-        _hal.sequenceInit();
+        _adc.channelSetup();
+        _adc.sequenceInit();
     }
 }
 
 void Adc::read()
 {
-    _readValue = _hal.read();
+    _readValue = _adc.read();
 }
 
 int32_t Adc::lastReading() const

@@ -1,4 +1,4 @@
 
 zephyr_library_sources(
-    Component.cpp
+    Printer.cpp
 )

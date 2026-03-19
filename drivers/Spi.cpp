@@ -1,8 +1,9 @@
 
 #include "Spi.h"
 
+
 Spi::Spi(SpiSpec& spec)
-    : _hal(spec)
+    : _spi(spec)
 {
 }
 
@@ -20,9 +21,9 @@ bool Spi::transceive(uint8_t* tx, uint8_t* rx, uint16_t const size)
 {
     bool success = false;
 
-    if (_hal.isReady())
+    if (_spi.isReady())
     {
-        int const ret = _hal.transceive(tx, rx, size);
+        int const ret = _spi.transceive(tx, rx, size);
         success = ret == 0;
     }
 

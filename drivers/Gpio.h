@@ -2,30 +2,29 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
-#include "zephyr/GpioWrapper.h"
+#include "IGpio.h"
+#include "GpioTypes.h"
+#include "GpioWrapper.h"
 
 
 using GpioSpec = GpioWrapper::SpecHandle;
-class Gpio
+class Gpio : public IGpio
 {
 public:
-    enum class Mode { Input, Output };
-    enum class State { Low, High };
-
-    Gpio(GpioSpec& spec, Mode mode);
+    Gpio(GpioSpec& spec, GpioMode mode);
 
     bool configure();
 
-    void set(State state);
+    void set(GpioState state);
     void toggle();
 
-    State read() const;
+    GpioState read() const;
 
 private:
-    Mode _mode;
-    State _state;
+    GpioMode _mode;
+    GpioState _state;
 
-    GpioWrapper _hal;
+    GpioWrapper _gpio;
 };
 
 

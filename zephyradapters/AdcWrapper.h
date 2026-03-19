@@ -2,7 +2,6 @@
 #ifndef __ADC_WRAPPER_H__
 #define __ADC_WRAPPER_H__
 
-
 #include "HalSpecHandle.h"
 
 

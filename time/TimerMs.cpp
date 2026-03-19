@@ -1,7 +1,6 @@
 
 #include "TimerMs.h"
 
-
 #include <zephyr/kernel.h>
 
 

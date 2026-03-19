@@ -1,13 +1,13 @@
 
-#ifndef __SYSTEM_TIME_H__
-#define __SYSTEM_TIME_H__
+#ifndef __TIME_SOURCE_H__
+#define __TIME_SOURCE_H__
 
-#include "ISystemTime.h"
+#include "ITimeSource.h"
 
 #include <cstdint>
 
 
-class SystemTime : public ISystemTime
+class TimeSource : public ITimeSource
 {
 public:
     uint64_t now() const override;

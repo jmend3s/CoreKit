@@ -1,13 +1,13 @@
 
-#ifndef __SYSTEM_CLOCK_H__
-#define __SYSTEM_CLOCK_H__
+#ifndef __CLOCK_H__
+#define __CLOCK_H__
 
 #include "TickCounter.h"
 
 #include <cstdint>
 
 
-class SystemClock
+class Clock
 {
 public:
     static uint32_t currentTick();

@@ -5,22 +5,21 @@ project(CoreKit)
 zephyr_library()
 
 zephyr_include_directories(
-    application
-    components
-    core
     drivers
-    platform
-    scheduler
+    hal
+    io
+    runtime
     services
-    system
     test
+    time
+    zephyradapters
 )
 
-add_subdirectory(components)
-add_subdirectory(core)
 add_subdirectory(drivers)
-add_subdirectory(platform)
-add_subdirectory(scheduler)
+add_subdirectory(hal)
+add_subdirectory(io)
+add_subdirectory(runtime)
 add_subdirectory(services)
-add_subdirectory(system)
 add_subdirectory(test)
+add_subdirectory(time)
+add_subdirectory(zephyradapters)

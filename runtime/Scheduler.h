@@ -3,7 +3,7 @@
 #define __SCHEDULER_H__
 
 #include "Component.h"
-#include "../system/TickCounter.h"
+#include "TickCounter.h"
 
 #include <cstdlib>
 

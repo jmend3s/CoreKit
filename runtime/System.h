@@ -2,7 +2,7 @@
 #ifndef __SYSTEM_H__
 #define __SYSTEM_H__
 
-#include "ISystemTime.h"
+#include "ITimeSource.h"
 #include "Component.h"
 #include "Scheduler.h"
 
@@ -10,7 +10,7 @@
 class System
 {
 public:
-    System(Component** components,  uint64_t* tickStorage, size_t count, ISystemTime& time,
+    System(Component** components,  uint64_t* tickStorage, size_t count, ITimeSource& time,
         uint32_t tickPeriodUs = 100);
 
     void initialize();
@@ -19,7 +19,7 @@ public:
     void pace();
 
 private:
-    ISystemTime& _time;
+    ITimeSource& _time;
     TickCounter _tickCounter;
     Scheduler _scheduler;
 

@@ -2,11 +2,12 @@
 #ifndef __ADC_H__
 #define __ADC_H__
 
-#include "zephyr/AdcWrapper.h"
+#include "IAdc.h"
+#include "AdcWrapper.h"
 
 
 using AdcSpec = AdcWrapper::SpecHandle;
-class Adc
+class Adc :public IAdc
 {
 public:
     Adc(AdcSpec& spec);
@@ -18,7 +19,7 @@ public:
 
 private:
     int32_t _readValue;
-    AdcWrapper _hal;
+    AdcWrapper _adc;
 };
 
 #endif

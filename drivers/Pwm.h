@@ -2,11 +2,12 @@
 #ifndef __PWM_H__
 #define __PWM_H__
 
-#include "zephyr/PwmWrapper.h"
+#include "IPwm.h"
+#include "PwmWrapper.h"
 
 
 using PwmSpec = PwmWrapper::Spec;
-class Pwm
+class Pwm : public IPwm
 {
 public:
     Pwm(PwmSpec& spec);
@@ -18,7 +19,7 @@ public:
     uint32_t periodNs();
 
 private:
-    PwmWrapper _hal;
+    PwmWrapper _pwm;
 };
 
 

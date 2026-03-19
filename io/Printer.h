@@ -3,7 +3,7 @@
 #define __SYSTEM_PRINT_H__
 
 
-class SystemPrint
+class Printer
 {
 public:
     static void print(char const* fmt, ...);

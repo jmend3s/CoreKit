@@ -2,10 +2,10 @@
 #ifndef __FAKE_SYSTEM_TIME_H__
 #define __FAKE_SYSTEM_TIME_H__
 
-#include "ISystemTime.h"
+#include "ITimeSource.h"
 
 
-class FakeSystemTime : public ISystemTime
+class FakeSystemTime : public ITimeSource
 {
 public:
     uint64_t now() const override;

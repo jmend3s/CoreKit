@@ -1,14 +1,14 @@
 
-#ifndef __I_SYSTEM_TIME_H__
-#define __I_SYSTEM_TIME_H__
+#ifndef __I_TIME_SOURCE_H__
+#define __I_TIME_SOURCE_H__
 
 #include <cstdint>
 
 
-class ISystemTime
+class ITimeSource
 {
 public:
-    virtual ~ISystemTime() = default;
+    virtual ~ITimeSource() = default;
 
     virtual uint64_t now() const = 0;
     virtual void sleep(uint32_t duration) = 0;
