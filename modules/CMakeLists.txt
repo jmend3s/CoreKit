@@ -1,6 +1,4 @@
 
-zephyr_library_sources(
-    BatterySensor.cpp
-    LowPassFilter.cpp
-)
+add_subdirectory(battery)
+add_subdirectory(imu)
 

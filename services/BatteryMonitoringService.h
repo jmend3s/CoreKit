@@ -2,9 +2,9 @@
 #ifndef __BATTERY_MONITORING_SERVICE_H__
 #define __BATTERY_MONITORING_SERVICE_H__
 
-#include "BatteryState.h"
-#include "BatterySensor.h"
-#include "LowPassFilter.h"
+#include "battery/BatteryState.h"
+#include "battery/BatterySensor.h"
+#include "battery/LowPassFilter.h"
 
 #include "Component.h"
 #include "Adc.h"
