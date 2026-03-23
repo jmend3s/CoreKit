@@ -8,6 +8,7 @@ zephyr_include_directories(
     drivers
     hal
     io
+    modules
     runtime
     services
     test
@@ -18,6 +19,7 @@ zephyr_include_directories(
 add_subdirectory(drivers)
 add_subdirectory(hal)
 add_subdirectory(io)
+add_subdirectory(modules)
 add_subdirectory(runtime)
 add_subdirectory(services)
 add_subdirectory(test)
