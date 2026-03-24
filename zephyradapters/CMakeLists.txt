@@ -4,5 +4,6 @@ zephyr_library_sources(
     GpioWrapper.cpp
     PwmWrapper.cpp
     HalSpecHandle.cpp
+    I2cWrapper.cpp
     SpiWrapper.cpp
 )

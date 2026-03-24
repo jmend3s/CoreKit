@@ -2,7 +2,7 @@
 #ifndef __IGPIO_H__
 #define __IGPIO_H__
 
-#include "GpioTypes.h"
+#include "../drivers/GpioTypes.h"
 
 
 class IGpio
