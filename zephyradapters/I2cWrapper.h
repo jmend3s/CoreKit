@@ -17,8 +17,8 @@ public:
     I2cWrapper(SpecHandle& spec);
 
     bool isReady();
-    // int write(uint8_t* tx, uint16_t size);
-    // int read(uint8_t * rx, uint16_t size);
+    int write(uint8_t* tx, uint16_t size);
+    int read(uint8_t * rx, uint16_t size);
     int writeRead(uint8_t* tx,  uint16_t txSize, uint8_t* rx, uint16_t rxSize);
 
 private:

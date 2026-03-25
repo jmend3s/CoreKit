@@ -8,9 +8,8 @@
 class IImu
 {
 public:
-    virtual bool init() = 0;
+    virtual bool initialize() = 0;
     virtual bool readRaw(ImuRawData& data) = 0;
-    virtual bool readScaled(ImuScaledData& data) = 0;
 
     virtual ~IImu() = default;
 };

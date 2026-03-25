@@ -1,33 +1,31 @@
 
-#ifndef __MPU_6050_H__
-#define __MPU_6050_H__
+#ifndef __MPU6050_H__
+#define __MPU6050_H__
 
 #include "IImu.h"
 #include "ImuTypes.h"
 
-#include "ISpi.h"
+#include "II2c.h"
+
 
 class Mpu6050 : public IImu
 {
 public:
-    Mpu6050(ISpi& spi);
+    Mpu6050(II2c& i2c);
 
-    bool init() override;
+    bool initialize() override;
     bool readRaw(ImuRawData& data) override;
-    bool readScaled(ImuScaledData& data) override;
 
 private:
-    void applyScaling(const ImuRawData& raw, ImuScaledData& scaled);
-
-    ISpi& _spi;
-
-    float _gyroBiasX;
-    float _gyroBiasY;
-    float _gyroBiasZ;
-
-    float _accelOffsetX;
-    float _accelOffsetY;
-    float _accelOffsetZ;
+    II2c& _i2c;
 };
+
+namespace Mpu6050Registers
+{
+    constexpr uint8_t whoAmI = 0x75;
+    constexpr uint8_t pwrMgmt1 = 0x6B;
+    constexpr uint8_t accelXoutH = 0x3B;
+}
+
 
 #endif
