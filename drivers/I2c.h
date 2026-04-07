@@ -13,9 +13,12 @@ public:
     I2c(I2cSpec& spec);
 
     bool isReady() override;
-    int write(uint8_t* tx, uint8_t size) override;
-    int read(uint8_t* rx, uint8_t size) override;
-    int writeRead(uint8_t* tx, uint8_t txSize, uint8_t* rx, uint8_t rxSize) override;
+    int write(const uint8_t* tx, uint16_t size) override;
+    int read(uint8_t* rx, uint16_t size) override;
+    int writeRead(const uint8_t* tx, uint16_t txSize, uint8_t* rx, uint16_t rxSize) override;
+
+    int writeReg(uint8_t reg, const uint8_t* data, uint16_t size) override;
+    int readReg(uint8_t reg, uint8_t* data, uint16_t size) override;
 
 private:
     I2cWrapper _i2c;

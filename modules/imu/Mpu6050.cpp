@@ -9,12 +9,22 @@ Mpu6050::Mpu6050(II2c& i2c)
 
 bool Mpu6050::initialize()
 {
-    uint8_t data[2];
+    uint8_t value = 0;
 
-    data[0] = Mpu6050Registers::pwrMgmt1;
-    data[1] = 0x00;
+    bool ret = false;
+    if (_i2c.readReg(Mpu6050Registers::whoAmI, &value, 1) == 0)
+    {
+        if (value != 0x68)
+        {
+            uint8_t zero = 0x00;
+            if (_i2c.writeReg(Mpu6050Registers::pwrMgmt1, &zero, 1) == 0)
+            {
+                ret = true;
+            }
+        }
+    }
 
-    return _i2c.write(data, 2) == 0;
+    return ret;
 }
 
 bool Mpu6050::readRaw(ImuRawData& data)
