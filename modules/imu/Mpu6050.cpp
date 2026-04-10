@@ -29,12 +29,9 @@ bool Mpu6050::initialize()
 
 bool Mpu6050::readRaw(ImuRawData& data)
 {
-    uint8_t reg = 0x3B;
     uint8_t buffer[14];
-
     bool ret = false;
-
-    if (_i2c.writeRead(&reg, 1, buffer, 14) == 0)
+    if (_i2c.readReg(Mpu6050Registers::accelXoutH, buffer, 14) == 0)
     {
         data.ax = (buffer[0] << 8) | buffer[1];
         data.ay = (buffer[2] << 8) | buffer[3];
@@ -43,7 +40,6 @@ bool Mpu6050::readRaw(ImuRawData& data)
         data.gx = (buffer[8] << 8) | buffer[9];
         data.gy = (buffer[10] << 8) | buffer[11];
         data.gz = (buffer[12] << 8) | buffer[13];
-
         ret = true;
     }
 

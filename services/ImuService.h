@@ -4,6 +4,7 @@
 
 #include "Component.h"
 #include "imu/IImu.h"
+#include "imu/ImuTypes.h"
 
 
 class ImuService : public Component
@@ -17,6 +18,7 @@ public:
 
 private:
     IImu& _imu;
+    ImuRawData _last{};
 };
 
 
