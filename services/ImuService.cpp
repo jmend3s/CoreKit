@@ -13,26 +13,38 @@ void ImuService::initialize()
     if (!_imu.initialize())
     {
         Printer::print("IMU initialization failed\n");
+        _valid = false;
     }
 }
 
 void ImuService::update()
 {
-    if (ImuRawData data;
+    if (ImuRawData data{};
         _imu.readRaw(data))
     {
-        _last = data;
-        Printer::print("AX:%d AY:%d AZ:%d | GX:%d GY:%d GZ:%d\n",
-            data.ax, data.ay, data.az,
-            data.gx, data.gy, data.gz);
+        _last = _scaler.scale(data);
+        Printer::print("AX:%.2f AY:%.2f AZ:%.2f | GX:%.2f GY:%.2f GZ:%.2f\n",
+            _last.ax, _last.ay, _last.az,
+            _last.gx, _last.gy, _last.gz);
+        _valid = true;
     }
     else
     {
-        Printer::print("IMU read? failed\n");
+        _valid = false;
     }
 }
 
 uint32_t ImuService::period() const
 {
     return 10; // 100 Hz
+}
+
+ImuData ImuService::get() const
+{
+    return _last;
+}
+
+bool ImuService::hasValidData() const
+{
+    return _valid;
 }

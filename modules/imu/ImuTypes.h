@@ -16,5 +16,16 @@ struct ImuRawData
     int16_t gz;
 };
 
+struct ImuData
+{
+    float ax;
+    float ay;
+    float az;
+
+    float gx;
+    float gy;
+    float gz;
+};
+
 
 #endif
