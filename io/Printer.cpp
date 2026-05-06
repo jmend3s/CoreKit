@@ -4,7 +4,7 @@
 #include <zephyr/kernel.h>
 
 #include <cstdarg>
-// #include <cstdio>
+#include <cstdio>
 
 
 void Printer::print(char const* fmt, ...)
@@ -15,10 +15,10 @@ void Printer::print(char const* fmt, ...)
     va_end(args);
 }
 
-// void Printer::print(char const* fmt, ...)
-// {
-//     va_list args;
-//     va_start(args, fmt);
-//     vprintf(fmt, args);
-//     va_end(args);
-// }
+void Printer::printf(char const* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+}
