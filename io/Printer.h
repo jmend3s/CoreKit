@@ -7,7 +7,6 @@ class Printer
 {
 public:
     static void print(char const* fmt, ...);
-    static void printf(char const* fmt, ...);
 };
 
 
