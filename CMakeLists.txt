@@ -8,6 +8,7 @@ zephyr_include_directories(
     drivers
     hal
     io
+    logging
     modules
     runtime
     services
@@ -19,6 +20,7 @@ zephyr_include_directories(
 add_subdirectory(drivers)
 add_subdirectory(hal)
 add_subdirectory(io)
+add_subdirectory(logging)
 add_subdirectory(modules)
 add_subdirectory(runtime)
 add_subdirectory(services)
