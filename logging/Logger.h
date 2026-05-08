@@ -1,4 +1,3 @@
-
 #ifndef __LOGGER_H__
 #define __LOGGER_H__
 
@@ -23,6 +22,8 @@ public:
         record.module = module;
         record.message = message;
         record.argumentCount = sizeof...(args);
+
+        return true;
     }
 
 private:
@@ -46,15 +47,15 @@ private:
 #endif
 
 #define CK_LOG_INFO(message, ...) \
-ck::Logger::instance().push( \
-ck::LogLevel::Info, \
+Logger::instance().push( \
+LogLevel::Info, \
 CK_LOG_MODULE, \
 message, \
 ##__VA_ARGS__)
 
 #define CK_LOG_ERROR(message, ...) \
-ck::Logger::instance().push( \
-ck::LogLevel::Error, \
+Logger::instance().push( \
+LogLevel::Error, \
 CK_LOG_MODULE, \
 message, \
 ##__VA_ARGS__)
