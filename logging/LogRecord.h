@@ -1,6 +1,6 @@
 
-#ifndef __LOGRECORD_H__
-#define __LOGRECORD_H__
+#ifndef __LOG_RECORD_H__
+#define __LOG_RECORD_H__
 
 #include "LogArgument.h"
 #include "LogLevels.h"
