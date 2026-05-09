@@ -1,7 +1,9 @@
 
 #ifndef __I_PRINTER_H__
 #define __I_PRINTER_H__
+
 #include <cstdint>
+
 
 class IPrinter
 {

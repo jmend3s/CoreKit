@@ -12,9 +12,9 @@ class Logger
 public:
     static Logger& instance();
 
-    template<typename... Args>
+    template<class... Args>
     bool push(LogLevel level, char const* module,
-        char const* message, Args... args)
+        char const* message, Args const&... args)
     {
         static_assert(sizeof...(args) <= MAX_LOG_ARGUMENTS, "Too many log arguments");
 
@@ -22,7 +22,9 @@ public:
         record.level = level;
         record.module = module;
         record.message = message;
-        record.argumentCount = sizeof...(args);
+        record.argumentCount = sizeof...(Args);
+
+        serializeArguments(record.arguments, args...);
 
         return true;
     }
@@ -30,15 +32,20 @@ public:
 private:
     Logger() = default;
 
-    void serializeArguments()
+    void serializeArguments(LogArgument*)
     {}
 
-    template<typename T, typename... Remaining>
-    void serializeArguments(LogArgument* arguments, T value, Remaining... remaining)
+    template<class T, class... Remaining>
+    void serializeArguments(LogArgument* arguments, T const& value, Remaining const&... remaining)
     {
-        LogSerializer serializer;
-        arguments[0] = serializer.serialize(value);
+        serializeArgument(arguments, value);
         serializeArguments(arguments + 1, remaining...);
+    }
+
+    template<class T>
+    static void serializeArgument(LogArgument* arguments, T const& value)
+    {
+        arguments[0] = LogSerializer<T>::serialize(value);
     }
 };
 
