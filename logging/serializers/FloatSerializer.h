@@ -1,6 +1,6 @@
 
-#ifndef __SERIALIZER_FLOAT_H__
-#define __SERIALIZER_FLOAT_H__
+#ifndef __FLOAT_SERIALIZER_H__
+#define __FLOAT_SERIALIZER_H__
 
 #include "LogSerializer.h"
 #include "LogArgument.h"

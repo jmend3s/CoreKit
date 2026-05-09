@@ -1,9 +1,17 @@
+
 #ifndef __LOGGER_H__
 #define __LOGGER_H__
 
 #include "LogLevels.h"
 #include "LogRecord.h"
+#include "LogRingBuffer.h"
 #include "LogSerializer.h"
+
+#include "serializers/FloatSerializer.h"
+#include "serializers/Int32Serializer.h"
+#include "serializers/UInt32Serializer.h"
+#include "serializers/StringSerializer.h"
+#include "serializers/PointerSerializer.h"
 
 
 class Logger
@@ -12,60 +20,30 @@ public:
     static Logger& instance();
 
     template<class... Args>
-    bool push(LogLevel level, char const* module,
-        char const* message, Args const&... args)
+    bool push(LogLevel level, char const* module, char const* message, Args const&... args)
     {
-        static_assert(sizeof...(args) <= MAX_LOG_ARGUMENTS, "Too many log arguments");
+        static_assert(sizeof...(Args) <= MAX_LOG_ARGUMENTS, "Too many log arguments");
 
         LogRecord record {};
+        record.timestamp = 0;
         record.level = level;
         record.module = module;
         record.message = message;
         record.argumentCount = sizeof...(Args);
 
-        serializeArguments(record.arguments, args...);
+        uint32_t index = 0;
+        ((record.arguments[index++] = LogSerializer<Args>::serialize(args)), ...);  // Investigate if the index is necessary
 
-        return true;
+        return _ringBuffer.push(record);
     }
+
+    bool pop(LogRecord& record);
 
 private:
     Logger() = default;
 
-    void serializeArguments(LogArgument*)
-    {}
-
-    template<class T, class... Remaining>
-    void serializeArguments(LogArgument* arguments, T const& value, Remaining const&... remaining)
-    {
-        serializeArgument(arguments, value);
-        serializeArguments(arguments + 1, remaining...);
-    }
-
-    template<class T>
-    static void serializeArgument(LogArgument* arguments, T const& value)
-    {
-        arguments[0] = LogSerializer<T>::serialize(value);
-    }
+    LogRingBuffer _ringBuffer;
 };
-
-
-#ifndef CK_LOG_MODULE
-#define CK_LOG_MODULE "DEFAULT"
-#endif
-
-#define CK_LOG_INFO(message, ...) \
-Logger::instance().push( \
-LogLevel::Info, \
-CK_LOG_MODULE, \
-message, \
-##__VA_ARGS__)
-
-#define CK_LOG_ERROR(message, ...) \
-Logger::instance().push( \
-LogLevel::Error, \
-CK_LOG_MODULE, \
-message, \
-##__VA_ARGS__)
 
 
 #endif

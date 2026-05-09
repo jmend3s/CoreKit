@@ -1,6 +1,6 @@
 
-#ifndef __SERIALIZE_POINTER_H__
-#define __SERIALIZE_POINTER_H__
+#ifndef __POINTER_SERIALIZER_H__
+#define __POINTER_SERIALIZER_H__
 
 #include "LogSerializer.h"
 #include "LogArgument.h"

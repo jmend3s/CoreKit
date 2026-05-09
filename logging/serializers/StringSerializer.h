@@ -1,6 +1,6 @@
 
-#ifndef __SERIALIZER_STRING_H__
-#define __SERIALIZER_STRING_H__
+#ifndef __STRING_SERIALIZER_H__
+#define __STRING_SERIALIZER_H__
 
 #include "LogSerializer.h"
 #include "LogArgument.h"

@@ -1,6 +1,6 @@
 
-#ifndef __SERIALIZER_INT32_H__
-#define __SERIALIZER_INT32_H__
+#ifndef __INT32_SERIALIZER_H__
+#define __INT32_SERIALIZER_H__
 
 #include "LogSerializer.h"
 #include "LogArgument.h"
