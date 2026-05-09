@@ -3,13 +3,8 @@
 
 #include <zephyr/kernel.h>
 
-#include <cstdarg>
 
-
-void Printer::print(char const* fmt, ...)
+void Printer::write(char const* data, int const length)
 {
-    va_list args;
-    va_start(args, fmt);
-    vprintk(fmt, args);
-    va_end(args);
+    printk("%.*s", length, data);
 }

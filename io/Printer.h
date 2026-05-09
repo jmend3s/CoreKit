@@ -2,11 +2,13 @@
 #ifndef __SYSTEM_PRINT_H__
 #define __SYSTEM_PRINT_H__
 
+#include "IPrinter.h"
 
-class Printer
+
+class Printer : public IPrinter
 {
 public:
-    static void print(char const* fmt, ...);
+    void write(const char* data, int length) override;
 };
 
 

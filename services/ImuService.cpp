@@ -12,7 +12,7 @@ void ImuService::initialize()
 {
     if (!_imu.initialize())
     {
-        Printer::print("IMU initialization failed\n");
+        // Printer::print("IMU initialization failed\n");
         _valid = false;
     }
 }
@@ -23,9 +23,9 @@ void ImuService::update()
         _imu.readRaw(data))
     {
         _last = _scaler.scale(data);
-        Printer::print("AX:%.2f AY:%.2f AZ:%.2f | GX:%.2f GY:%.2f GZ:%.2f\n",
-            _last.ax, _last.ay, _last.az,
-            _last.gx, _last.gy, _last.gz);
+        // Printer::print("AX:%.2f AY:%.2f AZ:%.2f | GX:%.2f GY:%.2f GZ:%.2f\n",
+            // _last.ax, _last.ay, _last.az,
+            // _last.gx, _last.gy, _last.gz);
         _valid = true;
     }
     else

@@ -8,7 +8,7 @@
 class IPrinter
 {
 public:
-    virtual void write(const char* data, uint32_t length) = 0;
+    virtual void write(const char* data, int length) = 0;
 };
 
 #endif
