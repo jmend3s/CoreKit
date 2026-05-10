@@ -7,9 +7,9 @@
 
 enum class LogArgumentType : uint8_t
 {
+    Float,
     Int32,
     UInt32,
-    Float,
     String,
     Pointer
 };
@@ -21,9 +21,9 @@ struct LogArgument
 
     union
     {
+        float floatValue;
         int32_t intValue;
         uint32_t uintValue;
-        float floatValue;
         char const* stringValue;
         void const* pointerValue;
     };
