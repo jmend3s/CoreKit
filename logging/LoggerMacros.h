@@ -1,6 +1,6 @@
 
-#ifndef __LOG_MACROS_H__
-#define __LOG_MACROS_H__
+#ifndef __LOGGER_MACROS_H__
+#define __LOGGER_MACROS_H__
 
 #include "Logger.h"
 #include "LogLevels.h"

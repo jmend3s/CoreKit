@@ -9,6 +9,9 @@ class IPrinter
 {
 public:
     virtual void write(const char* data, int length) = 0;
+
+    virtual ~IPrinter() = default;
 };
+
 
 #endif
