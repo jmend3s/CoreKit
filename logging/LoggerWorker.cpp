@@ -15,7 +15,7 @@ void LoggerWorker::work()
     LogRecord record {};
     while (Logger::instance().pop(record))
     {
-        int const length = static_cast<int>(LogFormater::format(record, _buffer, BUFFER_SIZE));
+        int const length = static_cast<int>(LogFormater::format(record, _buffer, _bufferSize));
         _printer.write(_buffer, length);
     }
 }

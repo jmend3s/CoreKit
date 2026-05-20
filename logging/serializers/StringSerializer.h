@@ -11,7 +11,7 @@ struct LogSerializer<char*>
 {
     static LogArgument serialize(char const* value)
     {
-        LogArgument argument;
+        LogArgument argument {};
         argument.type = LogArgumentType::String;
         argument.stringValue = value;
         return argument;

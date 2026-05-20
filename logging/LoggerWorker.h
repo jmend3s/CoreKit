@@ -4,6 +4,8 @@
 
 #include "IPrinter.h"
 
+#include <cstdio>
+
 
 class LoggerWorker
 {
@@ -13,10 +15,10 @@ public:
     void work();
 
 private:
-    static constexpr uint32_t BUFFER_SIZE = 256;
+    static constexpr size_t _bufferSize = 256;
 
     IPrinter& _printer;
-    char _buffer[BUFFER_SIZE];
+    char _buffer[_bufferSize]{};
 };
 
 #endif

@@ -4,16 +4,19 @@
 
 #include "LogRecord.h"
 
-#include <cstdint>
+#include <cstdio>
 
 
 class LogFormater
 {
 public:
-    static uint32_t format(LogRecord const& record, char* buffer, uint32_t bufferSize);
+    static uint32_t format(LogRecord const& record, char* buffer, size_t bufferSize);
 
 private:
-    static bool append(char* buffer, uint32_t bufferSize, uint32_t& offset, char const* fmt, ...);
+    // static bool append(char* buffer, size_t bufferSize, size_t& offset, char const* fmt, ...);
+    static bool appendHeader(char* buffer, size_t bufferSize, size_t& offset, LogRecord const& record);
+    static bool appendString(char* buffer, size_t bufferSize, size_t& offset, char const* text);
+    static char* itoa(int value);
     static char const* levelToString(LogLevel level);
 };
 

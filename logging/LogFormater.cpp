@@ -1,69 +1,127 @@
 
 #include "LogFormater.h"
+#include "PrinterK.h"
+
+#include <zephyr/sys/printk.h>
 
 #include <cstdarg>
-#include <cstdio>
+#include <cstdint>
 
 
-uint32_t LogFormater::format(LogRecord const& record, char* buffer, uint32_t bufferSize)
+uint32_t LogFormater::format(LogRecord const& record, char* buffer, size_t bufferSize)
 {
-    uint32_t offset = 0;
-    append(buffer, bufferSize, offset, "TEST");
+    size_t offset = 0;
+    appendHeader(buffer, bufferSize, offset, record);
+    appendString(buffer, bufferSize, offset, record.message);
+    for (uint32_t i = 0; i < record.argumentCount; i++)
+    {
+        PrinterK::print("end\n");
+        appendString(buffer, bufferSize, offset, " ");
 
-    // append(buffer, bufferSize, offset, "[%s][%s] ", levelToString(record.level), record.module);
-    // append(buffer, bufferSize, offset, "%s", record.message);
+        LogArgument const& argument = record.arguments[i];
+        switch (argument.type)
+        {
+            // case LogArgumentType::Float:
+            //     appendString(buffer, bufferSize, offset, itoa(argument.floatValue));
+            //     break;
+            case LogArgumentType::Int32:
+                appendString(buffer, bufferSize, offset, itoa(argument.intValue));
+                break;
+            // case LogArgumentType::UInt32:
+            //     appendString(buffer, bufferSize, offset, "%u", itoa(argument.uintValue));
+            //     break;
+            case LogArgumentType::String:
+                appendString(buffer, bufferSize, offset, argument.stringValue);
+                break;
+            // case LogArgumentType::Pointer:
+            //     appendString(buffer, bufferSize, offset, "%p", argument.pointerValue);
+            //     break;
+        }
+    }
+    // PrinterK::print("end");
 
-    // for (uint32_t i = 0; i < record.argumentCount; ++i)
-    // {
-    //     append(buffer, bufferSize, offset, " ");
-    //
-    //     LogArgument const& argument = record.arguments[i];
-    //     switch (argument.type)
-    //     {
-    //         case LogArgumentType::Float:
-    //             append(buffer, bufferSize, offset, "%f", argument.floatValue);
-    //             break;
-    //         case LogArgumentType::Int32:
-    //             append(buffer, bufferSize, offset, "%d", argument.intValue);
-    //             break;
-    //         case LogArgumentType::UInt32:
-    //             append(buffer, bufferSize, offset, "%u", argument.uintValue);
-    //             break;
-    //         case LogArgumentType::String:
-    //             append(buffer, bufferSize, offset, "%s", argument.stringValue);
-    //             break;
-    //         case LogArgumentType::Pointer:
-    //             append(buffer, bufferSize, offset, "%p", argument.pointerValue);
-    //             break;
-    //     }
-    // }
-    append(buffer, bufferSize, offset, "\n");
+    appendString(buffer, bufferSize, offset, "\n");
+
+    if (offset < bufferSize)
+    {
+        buffer[offset] = '\0';
+    }
+    else
+    {
+        buffer[bufferSize - 1] = '\0';
+    }
 
     return offset;
 }
 
-bool LogFormater::append(char* buffer, uint32_t bufferSize, uint32_t& offset, char const* fmt, ...)
+bool LogFormater::appendHeader(char* buffer, size_t bufferSize, size_t& offset, LogRecord const& record)
 {
-    if (offset >= bufferSize)
-        return false;
-
-    va_list args;
-    va_start(args, fmt);
-    int written;
-    written = vsnprintf(buffer + offset, bufferSize - offset, fmt, args);
-
-    va_end(args);
-
-    if (written < 0)
-        return false;
-
-    offset += static_cast<uint32_t>(written);
-
-    if (offset >= bufferSize)
-        offset = bufferSize - 1;
+    buffer[offset++] = '[';
+    appendString(buffer, bufferSize, offset, levelToString(record.level));
+    buffer[offset++] = ']';
+    buffer[offset++] = '[';
+    appendString(buffer, bufferSize, offset, record.module);
+    buffer[offset++] = ']';
+    buffer[offset++] = ' ';
 
     return true;
 }
+
+bool LogFormater::appendString(char* buffer, size_t const bufferSize, size_t& offset, char const* text)
+{
+    while (*text != '\0')
+    {
+        if (offset >= bufferSize - 1)
+        {
+            return false;
+        }
+
+        buffer[offset++] = *text++;
+    }
+
+    return true;
+}
+
+char* LogFormater::itoa(int value)
+{
+    static char buffer[12];
+    char *ptr = buffer;
+    unsigned int uvalue = value;
+
+    if (value == 0) {
+        buffer[0] = '0';
+        buffer[1] = '\0';
+        return buffer;
+    }
+
+    if (value < 0) {
+        *ptr++ = '-';
+        uvalue = -((unsigned int)value);
+    }
+
+    unsigned int temp = uvalue;
+    while (temp > 0) { ptr++; temp /= 10; }
+    *ptr = '\0';
+
+    while (uvalue > 0) {
+        *--ptr = '0' + (uvalue % 10);
+        uvalue /= 10;
+    }
+
+    return buffer;
+}
+
+// bool LogFormater::append(char* buffer, size_t bufferSize, size_t& offset, char const* fmt, ...)
+// {
+//     va_list args;
+//     va_start(args, fmt);
+//     int written = vsnprintk(buffer + offset, bufferSize - offset, fmt, args);
+//     va_end(args);
+//
+//     offset += static_cast<size_t>(written);
+//
+//     return true;
+// }
 
 char const* LogFormater::levelToString(LogLevel level)
 {

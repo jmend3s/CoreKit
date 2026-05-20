@@ -11,9 +11,9 @@ struct LogSerializer<float>
 {
     static LogArgument serialize(float const value)
     {
-        LogArgument argument;
+        LogArgument argument {};
         argument.type = LogArgumentType::Float;
-        argument.uintValue = value;
+        argument.floatValue = value;
         return argument;
     }
 };

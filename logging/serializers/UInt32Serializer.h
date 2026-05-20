@@ -13,7 +13,7 @@ struct LogSerializer<uint32_t>
 {
     static LogArgument serialize(uint32_t const value)
     {
-        LogArgument argument;
+        LogArgument argument {};
         argument.type = LogArgumentType::UInt32;
         argument.uintValue = value;
         return argument;
