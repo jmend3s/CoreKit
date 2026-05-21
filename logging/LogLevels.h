@@ -5,7 +5,6 @@
 #include <cstdint>
 
 
-
 enum class LogLevel : uint8_t
 {
     Debug = 0,

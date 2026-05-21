@@ -13,10 +13,12 @@ public:
     static uint32_t format(LogRecord const& record, char* buffer, size_t bufferSize);
 
 private:
-    // static bool append(char* buffer, size_t bufferSize, size_t& offset, char const* fmt, ...);
     static bool appendHeader(char* buffer, size_t bufferSize, size_t& offset, LogRecord const& record);
     static bool appendString(char* buffer, size_t bufferSize, size_t& offset, char const* text);
-    static char* itoa(int value);
+    static bool appendInt(char* buffer, size_t bufferSize, size_t& offset, int32_t value);
+    static bool appendUInt(char* buffer, size_t bufferSize, size_t& offset, uint32_t value);
+    static bool appendFloat(char* buffer, size_t bufferSize, size_t& offset, float value, uint32_t precision = 3);
+    static bool appendPointer(char* buffer, size_t bufferSize, size_t& offset, void const* pointer);
     static char const* levelToString(LogLevel level);
 };
 
