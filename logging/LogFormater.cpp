@@ -147,23 +147,59 @@ bool LogFormater::appendUInt(char* buffer, size_t bufferSize, size_t& offset, ui
 
 bool LogFormater::appendPointer(char* buffer, size_t bufferSize, size_t& offset, void const* pointer)
 {
+    auto address = reinterpret_cast<uintptr_t>(pointer);
+    return appendHexadecimal(buffer, bufferSize, offset, address);
+
+    // if (appendString(buffer, bufferSize, offset, "0x"))
+    // {
+    //     auto address = reinterpret_cast<uintptr_t>(pointer);
+    //     if (address == 0)
+    //     {
+    //         ret = appendString(buffer, bufferSize, offset, "0");
+    //     }
+    //     else
+    //     {
+    //         char constexpr hexChars[] = "0123456789ABCDEF";
+    //         char digits[sizeof(uintptr_t) * 2];
+    //
+    //         uint32_t index = 0;
+    //         while (address > 0)
+    //         {
+    //             digits[index++] = hexChars[address & 0xF];
+    //             address >>= 4;
+    //         }
+    //
+    //         if (offset + index < bufferSize - 1)
+    //         {
+    //             while (index > 0)
+    //             {
+    //                 buffer[offset++] = digits[--index];
+    //             }
+    //             ret = true;
+    //         }
+    //     }
+    // }
+}
+
+bool LogFormater::appendHexadecimal(char* buffer, size_t bufferSize, size_t& offset, uint32_t value)
+{
     bool ret = false;
     if (appendString(buffer, bufferSize, offset, "0x"))
     {
-        auto address = reinterpret_cast<uintptr_t>(pointer);
-        if (address == 0)
+        if (value == 0)
         {
-            ret = appendString(buffer, bufferSize, offset, "0");
+            ret =  appendString(buffer, bufferSize, offset, "0");
         }
         else
         {
-            char constexpr hexChars[] = "0123456789ABCDEF";
+            char constexpr hexadecimalCharacters[] = "0123456789ABCDEF";
             char digits[sizeof(uintptr_t) * 2];
+
             uint32_t index = 0;
-            while (address > 0)
+            while (value > 0)
             {
-                digits[index++] = hexChars[address & 0xF];
-                address >>= 4;
+                digits[index++] = hexadecimalCharacters[value & 0xF];
+                value >>= 4;
             }
 
             if (offset + index < bufferSize - 1)
@@ -172,6 +208,58 @@ bool LogFormater::appendPointer(char* buffer, size_t bufferSize, size_t& offset,
                 {
                     buffer[offset++] = digits[--index];
                 }
+                ret = true;
+            }
+        }
+    }
+
+    return ret;
+}
+
+bool LogFormater::appendBinary(char* buffer, size_t bufferSize, size_t& offset, uint32_t value)
+{
+    bool ret = false;
+    if (appendString(buffer, bufferSize, offset, "0b"))
+    {
+        if (value == 0)
+        {
+            ret = appendString(buffer, bufferSize, offset, "0");
+        }
+        else
+        {
+            char digits[32];
+            uint32_t index = 0;
+            while (value > 0)
+            {
+                digits[index++] = (value & 1U) ? '1' : '0';
+                value >>= 1;
+            }
+
+            if (offset + index < bufferSize - 1)
+            {
+                while (index > 0)
+                {
+                    buffer[offset++] = digits[--index];
+                }
+                ret = true;
+            }
+        }
+    }
+    return ret;
+}
+
+bool LogFormater::appendTimestamp(char* buffer, size_t const bufferSize, size_t& offset, uint32_t const timestamp)
+{
+    bool ret = false;
+    if (offset < bufferSize - 1)
+    {
+        buffer[offset++] = '[';
+
+        if (appendUInt(buffer, bufferSize, offset, timestamp))
+        {
+            if (offset < bufferSize - 1)
+            {
+                buffer[offset++] = ']';
                 ret = true;
             }
         }

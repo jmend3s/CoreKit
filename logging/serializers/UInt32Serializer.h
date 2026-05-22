@@ -5,8 +5,6 @@
 #include "LogSerializer.h"
 #include "LogArgument.h"
 
-#include <cstdint>
-
 
 template<>
 struct LogSerializer<uint32_t>

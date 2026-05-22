@@ -7,11 +7,16 @@
 
 enum class LogArgumentType : uint8_t
 {
-    Float,
     Int32,
     UInt32,
+    Float,
     String,
-    Pointer
+    Pointer,
+
+    Hexadecimal,
+    Binary32,
+
+    Timestamp
 };
 
 
