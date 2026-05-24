@@ -14,7 +14,7 @@ enum class LogArgumentType : uint8_t
     Pointer,
 
     Hexadecimal,
-    Binary32,
+    Binary,
 
     Timestamp
 };

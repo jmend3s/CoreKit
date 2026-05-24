@@ -2,19 +2,16 @@
 #ifndef __HEXADECIMAL_SERIALIZER_H__
 #define __HEXADECIMAL_SERIALIZER_H__
 
+#include "types/Hexadecimal.h"
 #include "LogSerializer.h"
 #include "LogArgument.h"
 
 
-struct Hex32
-{
-    uint32_t value;
-};
 
 template<>
-struct LogSerializer<Hex32>
+struct LogSerializer<Hexadecimal>
 {
-    static LogArgument serialize(Hex32 const value)
+    static LogArgument serialize(Hexadecimal const value)
     {
         LogArgument arg {};
         arg.type = LogArgumentType::Hexadecimal;

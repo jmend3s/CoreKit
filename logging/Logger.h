@@ -7,7 +7,9 @@
 #include "LogRingBuffer.h"
 #include "LogSerializer.h"
 
+#include "serializers/BinarySerializer.h"
 #include "serializers/FloatSerializer.h"
+#include "serializers/HexadecimalSerializer.h"
 #include "serializers/Int32Serializer.h"
 #include "serializers/UInt32Serializer.h"
 #include "serializers/StringSerializer.h"
@@ -32,7 +34,7 @@ public:
         record.argumentCount = sizeof...(Args);
 
         uint32_t index = 0;
-        ((record.arguments[index++] = LogSerializer<Args>::serialize(args)), ...);  // Investigate if the index is necessary
+        ((record.arguments[index++] = LogSerializer<Args>::serialize(args)), ...);
 
         return _ringBuffer.push(record);
     }

@@ -19,7 +19,7 @@ private:
     static bool appendUInt(char* buffer, size_t bufferSize, size_t& offset, uint32_t value);
     static bool appendFloat(char* buffer, size_t bufferSize, size_t& offset, float value, uint32_t precision = 3);
     static bool appendPointer(char* buffer, size_t bufferSize, size_t& offset, void const* pointer);
-    static bool appendHexadecimal(char* buffer, size_t bufferSize, size_t& offset, uint32_t value);
+    static bool appendHexadecimal(char* buffer, size_t bufferSize, size_t& offset, uint32_t value, bool prefix = true);
     static bool appendBinary(char* buffer, size_t bufferSize, size_t& offset, uint32_t value);
     static bool appendTimestamp(char* buffer, size_t bufferSize, size_t& offset, uint32_t timestamp);
     static char const* levelToString(LogLevel level);

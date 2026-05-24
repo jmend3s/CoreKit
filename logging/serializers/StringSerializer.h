@@ -5,9 +5,11 @@
 #include "LogSerializer.h"
 #include "LogArgument.h"
 
+#include <cstddef>
+
 
 template<>
-struct LogSerializer<char*>
+struct LogSerializer<char const*>
 {
     static LogArgument serialize(char const* value)
     {
@@ -16,6 +18,18 @@ struct LogSerializer<char*>
         argument.stringValue = value;
         return argument;
     }
+};
+
+template<size_t N>
+struct LogSerializer<char[N]>
+    : LogSerializer<char const*>
+{
+};
+
+template<size_t N>
+struct LogSerializer<char const[N]>
+    : LogSerializer<char const*>
+{
 };
 
 

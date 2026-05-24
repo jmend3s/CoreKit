@@ -2,24 +2,20 @@
 #ifndef __BINARY_SERIALIZER_H__
 #define __BINARY_SERIALIZER_H__
 
+#include "types/Binary.h"
 #include "LogSerializer.h"
 #include "LogArgument.h"
 
 
-struct Binary32
-{
-    uint32_t value;
-};
-
 template<>
-struct LogSerializer<Binary32>
+struct LogSerializer<Binary>
 {
-    static LogArgument serialize(Binary32 const value)
+    static LogArgument serialize(Binary const value)
     {
-        LogArgument arg {};
-        arg.type = LogArgumentType::Binary32;
-        arg.uintValue = value.value;
-        return arg;
+        LogArgument argument {};
+        argument.type = LogArgumentType::Binary;
+        argument.uintValue = value.value;
+        return argument;
     }
 };
 

@@ -2,7 +2,7 @@
 #include "LogFormater.h"
 
 
-uint32_t LogFormater::format(LogRecord const& record, char* buffer, size_t bufferSize)
+uint32_t LogFormater::format(LogRecord const& record, char* buffer, size_t const bufferSize)
 {
     size_t offset = 0;
     appendHeader(buffer, bufferSize, offset, record);
@@ -29,6 +29,15 @@ uint32_t LogFormater::format(LogRecord const& record, char* buffer, size_t buffe
             case LogArgumentType::Pointer:
                 appendPointer(buffer, bufferSize, offset, argument.pointerValue);
                 break;
+            case LogArgumentType::Hexadecimal:
+                appendHexadecimal(buffer, bufferSize, offset, argument.uintValue);
+                break;
+        case LogArgumentType::Binary:
+            appendBinary(buffer, bufferSize, offset, argument.uintValue);
+            break;
+        case LogArgumentType::Timestamp:
+            appendTimestamp(buffer, bufferSize, offset, argument.uintValue);
+            break;
         }
     }
     appendString(buffer, bufferSize, offset, "\n");
@@ -45,7 +54,7 @@ uint32_t LogFormater::format(LogRecord const& record, char* buffer, size_t buffe
     return offset;
 }
 
-bool LogFormater::appendHeader(char* buffer, size_t bufferSize, size_t& offset, LogRecord const& record)
+bool LogFormater::appendHeader(char* buffer, size_t const bufferSize, size_t& offset, LogRecord const& record)
 {
     buffer[offset++] = '[';
     appendString(buffer, bufferSize, offset, levelToString(record.level));
@@ -82,7 +91,7 @@ bool LogFormater::appendString(char* buffer, size_t const bufferSize, size_t& of
     return ret;
 }
 
-bool LogFormater::appendInt(char* buffer, size_t bufferSize, size_t& offset, int32_t value)
+bool LogFormater::appendInt(char* buffer, size_t const bufferSize, size_t& offset, int32_t value)
 {
     bool ret = false;
     if (offset < bufferSize - 1)
@@ -112,7 +121,7 @@ bool LogFormater::appendInt(char* buffer, size_t bufferSize, size_t& offset, int
     return ret;
 }
 
-bool LogFormater::appendUInt(char* buffer, size_t bufferSize, size_t& offset, uint32_t value)
+bool LogFormater::appendUInt(char* buffer, size_t const bufferSize, size_t& offset, uint32_t value)
 {
     bool ret = false;
     if (offset < bufferSize)
@@ -145,46 +154,22 @@ bool LogFormater::appendUInt(char* buffer, size_t bufferSize, size_t& offset, ui
     return ret;
 }
 
-bool LogFormater::appendPointer(char* buffer, size_t bufferSize, size_t& offset, void const* pointer)
+bool LogFormater::appendPointer(char* buffer, size_t const bufferSize, size_t& offset, void const* pointer)
 {
-    auto address = reinterpret_cast<uintptr_t>(pointer);
+    auto const address = reinterpret_cast<uintptr_t>(pointer);
     return appendHexadecimal(buffer, bufferSize, offset, address);
-
-    // if (appendString(buffer, bufferSize, offset, "0x"))
-    // {
-    //     auto address = reinterpret_cast<uintptr_t>(pointer);
-    //     if (address == 0)
-    //     {
-    //         ret = appendString(buffer, bufferSize, offset, "0");
-    //     }
-    //     else
-    //     {
-    //         char constexpr hexChars[] = "0123456789ABCDEF";
-    //         char digits[sizeof(uintptr_t) * 2];
-    //
-    //         uint32_t index = 0;
-    //         while (address > 0)
-    //         {
-    //             digits[index++] = hexChars[address & 0xF];
-    //             address >>= 4;
-    //         }
-    //
-    //         if (offset + index < bufferSize - 1)
-    //         {
-    //             while (index > 0)
-    //             {
-    //                 buffer[offset++] = digits[--index];
-    //             }
-    //             ret = true;
-    //         }
-    //     }
-    // }
 }
 
-bool LogFormater::appendHexadecimal(char* buffer, size_t bufferSize, size_t& offset, uint32_t value)
+bool LogFormater::appendHexadecimal(char* buffer, size_t const bufferSize, size_t& offset, uint32_t value, bool prefix)
 {
     bool ret = false;
-    if (appendString(buffer, bufferSize, offset, "0x"))
+
+    if (prefix)
+    {
+        appendString(buffer, bufferSize, offset, "0x");
+    }
+
+    if (offset < bufferSize - 1)
     {
         if (value == 0)
         {
@@ -216,7 +201,7 @@ bool LogFormater::appendHexadecimal(char* buffer, size_t bufferSize, size_t& off
     return ret;
 }
 
-bool LogFormater::appendBinary(char* buffer, size_t bufferSize, size_t& offset, uint32_t value)
+bool LogFormater::appendBinary(char* buffer, size_t const bufferSize, size_t& offset, uint32_t value)
 {
     bool ret = false;
     if (appendString(buffer, bufferSize, offset, "0b"))
@@ -268,7 +253,7 @@ bool LogFormater::appendTimestamp(char* buffer, size_t const bufferSize, size_t&
     return ret;
 }
 
-bool LogFormater::appendFloat(char* buffer, size_t bufferSize, size_t& offset, float value, uint32_t precision)
+bool LogFormater::appendFloat(char* buffer, size_t const bufferSize, size_t& offset, float value, uint32_t precision)
 {
     bool ret = false;
     if (offset < bufferSize - 1)
