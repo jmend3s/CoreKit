@@ -5,7 +5,9 @@ project(CoreKit)
 zephyr_library()
 
 zephyr_include_directories(
+    communication
     drivers
+    error
     hal
     io
     logging
@@ -14,10 +16,12 @@ zephyr_include_directories(
     services
     test
     time
-    zephyradapters
+    platformadapters
 )
 
+add_subdirectory(communication)
 add_subdirectory(drivers)
+add_subdirectory(error)
 add_subdirectory(hal)
 add_subdirectory(io)
 add_subdirectory(logging)
@@ -26,4 +30,4 @@ add_subdirectory(runtime)
 add_subdirectory(services)
 add_subdirectory(test)
 add_subdirectory(time)
-add_subdirectory(zephyradapters)
+add_subdirectory(platformadapters)

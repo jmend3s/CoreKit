@@ -4,7 +4,7 @@
 
 #include "IGpio.h"
 #include "GpioTypes.h"
-#include "GpioWrapper.h"
+#include "zephyr/GpioWrapper.h"
 
 
 using GpioSpec = GpioWrapper::SpecHandle;
@@ -13,12 +13,12 @@ class Gpio : public IGpio
 public:
     Gpio(GpioSpec& spec, GpioMode mode);
 
-    bool configure();
+    Result configure() override;
 
-    void set(GpioState state);
-    void toggle();
+    void set(GpioState state) override;
+    void toggle() override;
 
-    GpioState read() const;
+    GpioState read() const override;
 
 private:
     GpioMode _mode;

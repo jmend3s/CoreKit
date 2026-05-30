@@ -7,7 +7,7 @@
 #include "battery/LowPassFilter.h"
 
 #include "Component.h"
-#include "Adc.h"
+#include "../drivers/platform/Adc.h"
 
 #include <cstdint>
 

@@ -3,7 +3,7 @@
 #define __ADC_H__
 
 #include "IAdc.h"
-#include "AdcWrapper.h"
+#include "zephyr/AdcWrapper.h"
 
 
 using AdcSpec = AdcWrapper::SpecHandle;

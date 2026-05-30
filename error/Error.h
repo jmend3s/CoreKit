@@ -11,13 +11,21 @@ enum class Error : uint8_t
 
     InvalidArgument,
     Timeout,
-    IoError,
-    SpiError,
-    GpioError,
 
-    DeviceNotReady,
-    DeviceNotFound,
-    BufferTooSmall
+    NotReady,
+    NotFound,
+
+    Busy,
+
+    Communication,
+
+    Hardware,
+
+    BufferTooSmall,
+
+    NotSupported,
+
+    Unknown
 };
 
 

@@ -9,15 +9,16 @@ Gpio::Gpio(GpioSpec& spec, GpioMode const mode)
 {
 }
 
-bool Gpio::configure()
+Result Gpio::configure()
 {
-    bool configured = false;
+    Result result = Result::fail(Error::NotReady);
     if (_gpio.isReady())
     {
         _gpio.pinConfigure(_mode == GpioMode::Output);
-        configured = true;
+        result = Result::success();
     }
-    return configured;
+
+    return result;
 }
 
 void Gpio::set(GpioState const state)

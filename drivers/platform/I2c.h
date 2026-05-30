@@ -3,7 +3,7 @@
 #define __I2C_H__
 
 #include "II2c.h"
-#include "I2cWrapper.h"
+#include "zephyr/I2cWrapper.h"
 
 
 using I2cSpec = I2cWrapper::SpecHandle;

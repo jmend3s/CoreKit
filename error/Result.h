@@ -4,6 +4,8 @@
 
 #include "Error.h"
 
+#include <compare>
+
 
 class Result
 {
@@ -16,7 +18,7 @@ public:
         : _error(error)
     {}
 
-    static constexpr Result ok()
+    static constexpr Result success()
     {
         return { Error::None };
     }
@@ -40,6 +42,8 @@ public:
     {
         return _error;
     }
+
+    auto operator<=>(const Result&) const = default;
 
 private:
     Error _error;

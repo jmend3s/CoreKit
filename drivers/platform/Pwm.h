@@ -3,7 +3,7 @@
 #define __PWM_H__
 
 #include "IPwm.h"
-#include "PwmWrapper.h"
+#include "zephyr/PwmWrapper.h"
 
 
 using PwmSpec = PwmWrapper::Spec;

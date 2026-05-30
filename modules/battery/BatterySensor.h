@@ -2,7 +2,7 @@
 #ifndef __BATTERY_SENSOR_H__
 #define __BATTERY_SENSOR_H__
 
-#include "Adc.h"
+#include "../../drivers/platform/Adc.h"
 
 
 class BatterySensor
