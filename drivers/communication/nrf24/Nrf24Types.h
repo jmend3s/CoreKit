@@ -5,7 +5,7 @@
 #include <cstdint>
 
 
-namespace Nrf24ConfigBits
+namespace ConfigBits
 {
     uint8_t constexpr PrimRx   = (1u << 0);
     uint8_t constexpr PwrUp    = (1u << 1);
@@ -18,7 +18,7 @@ namespace Nrf24ConfigBits
     uint8_t constexpr MaskRxDr  = (1u << 6);
 }
 
-namespace Nrf24StatusBits
+namespace StatusBits
 {
     uint8_t constexpr TxFull = (1u << 0);
 

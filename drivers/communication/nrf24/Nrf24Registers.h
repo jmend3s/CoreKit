@@ -7,7 +7,7 @@
 
 enum class Register : uint8_t
 {
-        CONFIG      = 0x00,
+    CONFIG      = 0x00,
     EN_AA       = 0x01,
     EN_RXADDR   = 0x02,
     SETUP_AW    = 0x03,

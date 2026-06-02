@@ -6,6 +6,7 @@
 class Delay
 {
 public:
+    static void us(int duration);
     static void ms(int duration);
 };
 
