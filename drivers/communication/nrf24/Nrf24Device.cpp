@@ -5,7 +5,14 @@
 #include "Nrf24Types.h"
 
 
-Result Nrf24Device::initialize(bool isReceiver)
+Nrf24Device::Nrf24Device(ISpi& spi, IGpio& ce, IGpio& csn)
+    : _spi(spi)
+    , _ce(ce)
+    , _csn(csn)
+{
+}
+
+Result Nrf24Device::initialize(Config const& config)
 {
     uint8_t configuration = 0;
 
@@ -13,45 +20,42 @@ Result Nrf24Device::initialize(bool isReceiver)
     configuration |= ConfigBits::Crco;
     configuration |= ConfigBits::PwrUp;
 
-    configuration = isReceiver ?
+    configuration = config.isReceiver ?
         configuration |= ConfigBits::PrimRx :
         configuration &= ~ConfigBits::PrimRx;
 
-    writeRegister(Register::CONFIG, configuration);
-
-    Delay::ms(2);
-
-    writeRegister(Register::RF_CH, 76);
-    writeRegister(Register::RF_SETUP, 0x06);
-
-    static uint8_t constexpr address[_addressSize] = { 'C','O','R','E','1' };
-
-    writeRegisterMulti(Register::TX_ADDR, address, 5);
-    writeRegisterMulti(Register::RX_ADDR_P0, address, 5);
-
-    writeRegister(Register::RX_PW_P0, _config.payloadSize);
-
-    sendCommand(Command::FLUSH_TX);
-    sendCommand(Command::FLUSH_RX);
-
-    if (isReceiver)
+    Result result = writeRegister(Register::CONFIG, configuration);
+    if (result.isOk())
     {
-        startListening();
+        Delay::ms(2);
+
+        result = writeRegister(Register::RF_CH, config.channel);
+        result = result.isOk() ? writeRegister(Register::RF_SETUP, _defaultRfSetup) : result;
+        if (result.isOk())
+        {
+            result = writeRegisterMulti(Register::TX_ADDR, config.address, _addressLength);
+            result = result.isOk() ? writeRegisterMulti(Register::RX_ADDR_P0, config.address, _addressLength) : result;
+            result = result.isOk() ? writeRegister(Register::RX_PW_P0, config.payloadSize) : result; // result.assertError()?
+            if (result.isOk())
+            {
+                result = sendCommand(Command::FLUSH_TX);
+                result = result.isOk() ? sendCommand(Command::FLUSH_RX) : result;
+                if (result.isOk())
+                {
+                    if (config.isReceiver)
+                    {
+                        result = startListening();
+                    }
+                    else
+                    {
+                        result = stopListening();
+                    }
+                }
+            }
+        }
     }
-    else
-    {
-        stopListening();
-    }
 
-    return Result::success(); // Not good obviously 
-}
-
-bool Nrf24Device::available()
-{
-    uint8_t status;
-    readStatus(status);
-
-    return status & StatusBits::RxDr;
+    return result;
 }
 
 Result Nrf24Device::send(uint8_t const* data, uint8_t const length)
@@ -73,7 +77,7 @@ Result Nrf24Device::send(uint8_t const* data, uint8_t const length)
         if (result.isOk())
         {
             _ce.set(GpioState::High);
-            Delay::us(20);
+            Delay::us(_pulseUs);
             _ce.set(GpioState::Low);
         }
     }
@@ -107,20 +111,77 @@ Result Nrf24Device::receive(uint8_t* data, uint8_t const length)
     return result;
 }
 
-Result Nrf24Device::clearStatus(uint8_t const flags)
+bool Nrf24Device::available()
 {
-    return writeRegister(Register::STATUS, flags);
+    uint8_t status;
+    readStatus(status);
+
+    return status & StatusBits::RxDr;
 }
 
-Result Nrf24Device::transfer(const uint8_t* tx, uint8_t* rx, uint16_t const size)
+Result Nrf24Device::startListening()
 {
-    _csn.set(GpioState::Low);
-
-    Result const result = _spi.transceive(tx, rx, size);
-
-    _csn.set(GpioState::High);
+    uint8_t configuration = 0;
+    Result result = readRegister(Register::CONFIG, configuration);
+    if (result.isOk())
+    {
+        configuration |= ConfigBits::PrimRx;
+        result = writeRegister(Register::CONFIG, configuration);
+        if (result.isOk())
+        {
+            result = clearStatus(StatusBits::RxDr | StatusBits::TxDs | StatusBits::MaxRt);
+            if (result.isOk())
+            {
+                _ce.set(GpioState::High);
+                Delay::us(_transitionUs);
+            }
+        }
+    }
 
     return result;
+}
+
+Result Nrf24Device::stopListening()
+{
+    _ce.set(GpioState::Low);
+
+    uint8_t configuration = 0;
+    Result result = readRegister(Register::CONFIG, configuration);
+    if (result.isOk())
+    {
+        configuration &= ~ConfigBits::PrimRx;
+        result = writeRegister(Register::CONFIG, configuration);
+    }
+
+    return result;
+}
+
+Result Nrf24Device::readRegister(Register const reg, uint8_t& value)
+{
+    uint8_t tx[2];
+    uint8_t rx[2];
+
+    tx[0] = static_cast<uint8_t>(Command::R_REGISTER) | static_cast<uint8_t>(reg);
+    tx[1] = 0xFF;
+
+    Result const result = transfer(tx, rx, 2);
+    if (result.isOk())
+    {
+        value = rx[1];
+    }
+
+    return result;
+}
+
+Result Nrf24Device::writeRegister(Register reg, uint8_t const value)
+{
+    uint8_t tx[2];
+    uint8_t rx[2];
+
+    tx[0] = static_cast<uint8_t>(Command::W_REGISTER) | static_cast<uint8_t>(reg);
+    tx[1] = value;
+
+    return transfer(tx, rx, 2);
 }
 
 Result Nrf24Device::writeRegisterMulti(Register reg, uint8_t const* data, uint8_t const length)
@@ -136,17 +197,6 @@ Result Nrf24Device::writeRegisterMulti(Register reg, uint8_t const* data, uint8_
     }
 
     return transfer(tx, rx, length + 1);
-}
-
-Result Nrf24Device::writeRegister(Register reg, uint8_t const value)
-{
-    uint8_t tx[2];
-    uint8_t rx[2];
-
-    tx[0] = static_cast<uint8_t>(Command::W_REGISTER) | static_cast<uint8_t>(reg);
-    tx[1] = value;
-
-    return transfer(tx, rx, 2);
 }
 
 Result Nrf24Device::sendCommand(Command const command)
@@ -172,6 +222,22 @@ Result Nrf24Device::readStatus(uint8_t& status)
     {
         status = rx[0];
     }
+
+    return result;
+}
+
+Result Nrf24Device::clearStatus(uint8_t const flags)
+{
+    return writeRegister(Register::STATUS, flags);
+}
+
+Result Nrf24Device::transfer(const uint8_t* tx, uint8_t* rx, uint16_t const size)
+{
+    _csn.set(GpioState::Low);
+
+    Result const result = _spi.transceive(tx, rx, size);
+
+    _csn.set(GpioState::High);
 
     return result;
 }
