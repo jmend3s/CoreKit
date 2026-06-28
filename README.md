@@ -1,256 +1,242 @@
 # CoreKit
 
-> **Modern C++ for real-time robotics**
+> **Modern C++ for Real-Time Robotics**
 
-CoreKit is a modern C++ robotics framework designed for embedded and real-time systems. It provides portable hardware abstractions, robotics-focused services, and a modular architecture that scales from resource-constrained microcontrollers to complex distributed robotic platforms.
+CoreKit is a modern C++ framework built on top of **Zephyr RTOS** that simplifies the development of embedded robotics software.
 
-The project is currently built on top of Zephyr RTOS and is architected for future portability across FreeRTOS, Linux RT, and bare-metal environments.
+Instead of scattering hardware-specific code throughout an application, CoreKit provides clean abstractions, reusable services, and a modular architecture that allows developers to focus on robot behavior rather than platform details.
 
-> **Project Status:** Early-stage development, architected for production use.
+Whether you're building a small RC controller, an autonomous robot, or a complete robotic system, CoreKit aims to provide a scalable foundation that grows with your project.
 
 ---
 
-# Vision
+## Why CoreKit?
 
-Building robotics software often requires repeatedly solving the same infrastructure problems:
+Developing robotics software often leads to tightly coupled code where application logic, hardware drivers, operating system APIs, and communication protocols become intertwined.
 
+CoreKit solves this by introducing a layered architecture that separates responsibilities while remaining lightweight and efficient enough for real-time embedded systems.
+
+### Without CoreKit
+
+- Zephyr APIs spread throughout the application
+- Hardware drivers coupled to business logic
+- Difficult unit testing
+- Poor code reuse
+- Platform-specific code everywhere
+- Hard to scale as projects grow
+
+### With CoreKit
+
+- Clean C++ interfaces
+- Modular services
+- Testable architecture
+- Dependency injection
 - Hardware abstraction
-- Device communication
-- Real-time scheduling
-- Telemetry
-- Sensor integration
-- Motor control
-- Platform portability
-
-CoreKit aims to provide a unified software foundation that allows developers to focus on robotic behavior and application logic rather than low-level platform details.
-
-The long-term goal is a consistent robotics framework that spans everything from microcontrollers to distributed robotic systems.
+- Clear separation of concerns
+- Robotics-oriented design
 
 ---
 
-# Why CoreKit?
+# Philosophy
 
-Modern embedded robotics development typically follows one of two paths:
+CoreKit is built around a few fundamental principles.
 
-### 1. Direct RTOS / HAL usage (e.g. Zephyr APIs directly)
+- **Modern C++**
+- **Composition over inheritance**
+- **Dependency Injection**
+- **Explicit ownership**
+- **Test-first development**
+- **Real-time friendly**
+- **Platform abstraction**
+- **Robotics first**
 
-- High control over hardware
-- Low abstraction overhead
-- But:
-  - Tight coupling to platform APIs
-  - Poor portability across RTOSes
-  - Hard to unit test outside hardware
-  - Business logic often mixed with hardware code
+The goal is not to hide Zephyr.
 
-### 2. Heavy frameworks or middleware stacks
-
-- Good abstraction and structure
-- But:
-  - Often too large for embedded systems
-  - High dependency footprint
-  - Limited determinism for real-time control
-  - Difficult to tailor for constrained systems
-
-### CoreKit’s approach
-
-CoreKit sits between these extremes:
-
-- Thin, explicit abstraction layers over hardware
-- No hidden runtime complexity
-- Zero dynamic allocation in critical paths
-- Designed for deterministic execution
-- Fully testable outside hardware
-- Portable across RTOS and bare-metal targets
-
-Instead of replacing Zephyr or other RTOSes, CoreKit structures and standardizes how you build systems on top of them.
-
-It answers one question:
-
-> How to build scalable, testable, real-time robotics software without locking ourselves into a specific platform or introducing unnecessary complexity?
+Instead, CoreKit provides a cleaner, more maintainable architecture on top of it.
 
 ---
 
-# Design Principles
+# Features
 
-CoreKit is built around a strict set of engineering principles:
+Current and planned features include:
 
- - ### Portability
-    - Application logic should not depend on the underlying operating system or hardware.
-   
- - ### Testability
-   - Every component must be testable on host systems without hardware dependency.
+### Hardware
 
- - ### Hardware Abstraction
-   - Platform-specific code is isolated behind explicit interfaces.
+- GPIO
+- SPI
+- I²C
+- UART
+- ADC
+- PWM
+- Timers
 
- - ### Zero Dynamic Allocation
-   - Deterministic behavior is prioritized over convenience in real-time paths.
+### Communication
 
- - ### Minimal Dependencies
-   - External dependencies are avoided to maintain portability and build simplicity.
+- NRF24L01+
+- CAN *(planned)*
+- BLE *(planned)*
+- Wi-Fi *(planned)*
+- Ethernet *(planned)*
 
- - ### Real-Time Safety
-   - All design decisions consider timing predictability and execution determinism.
+### Core
+
+- Logging
+- Error handling
+- Configuration
+- Services
+- Dependency Injection
+- Platform abstraction
+- Unit testing
+
+### Robotics
+
+- Motor drivers
+- Encoders
+- IMU support
+- PID controllers
+- Sensor interfaces
+- Robot abstractions
+- Motion control *(planned)*
+- Localization *(planned)*
+- Sensor fusion *(planned)*
 
 ---
 
 # Architecture
 
-CoreKit uses a layered architecture that enforces separation of concerns:
+CoreKit follows a layered architecture.
 
-```
-Application
-     ↓
- Services
-     ↓
- Managers
-     ↓
-  Drivers
-     ↓
-    HAL
-     ↓
-   OSAL
-     ↓
-  Platform
-```
-**Layer Responsibilities**
- - Application
+```text
++--------------------------------------+
+|            Application               |
++--------------------------------------+
+|               Services               |
++--------------------------------------+
+|      Hardware and Communication      |
++--------------------------------------+
+|        Platform Abstraction          |
++--------------------------------------+
+|            Zephyr RTOS               |
++--------------------------------------+
+|              Hardware                |
++--------------------------------------+
+````
 
-**Robot-specific behavior and mission logic:**
- - Services
+Each layer has a single responsibility and depends only on the layer directly below it.
 
-**Reusable system-level functionality:**
+This separation makes projects easier to understand, maintain, and test.
+ 
+ ---
 
- - Logging
- - Telemetry
- - Messaging
- - Sensor fusion
- - Motion control
- - Managers
+# Why Zephyr?
 
-**Subsystem orchestration and lifecycle management:**
- - Drivers
+CoreKit is built on top of Zephyr because it provides:
 
-**Hardware-independent device drivers:**
- - HAL (Hardware Abstraction Layer)
+* Wide hardware support
+* Excellent RTOS capabilities
+* Modern device model
+* Active open-source community
+* Long-term maintainability
+* Professional development tools
 
-**Unified interfaces for peripherals:**
-
- - GPIO
- - SPI
- - I2C
- - UART
- - PWM
- - ADC
-
-**OSAL** (Operating System Abstraction Layer)
-
-**RTOS-specific abstractions:** (tasks, scheduling, synchronization).
- - Platform
-
-**Underlying OS + hardware-specific implementation:**
- - Current Modules
- - Core Infrastructure
-   - Logging
-   - OSAL
-
-**Hardware Abstractions:**
-
- - GPIO
- - SPI
- - I2C
- - UART
- - PWM
- - ADC
-   
- **Drivers:**
- - NRF24L01
- - IMU support
-   
----
-
-## Roadmap
-
-**Communication:**
- - CAN bus
- - Messaging framework
- - Telemetry system
- - Ground control communication
-
-**Control Systems:**
- - PID controllers
- - Sensor fusion
- - BLDC motor control
- - Field-Oriented Control (FOC)
-
-**Platform Expansion:**
- - FreeRTOS support
- - Linux RT support
- - Bare-metal targets
+CoreKit embraces Zephyr instead of replacing it.
 
 ---
 
-## Supported Platforms
-**Current:**
+# Documentation
 
- - Zephyr RTOS
+The complete documentation is available in the GitHub (Wiki)[https://github.com/jmend3s/CoreKit/wiki].
 
-**Planned:**
- - FreeRTOS
- - Linux RT
- - Bare-metal systems
+Topics include:
 
-**Language & Toolchain:**
- - C++17 (primary standard)
- - C interoperability where needed
- - No dependency on STL in core framework
-
-**Build system:**
- - CMake
- - West (Zephyr module integration)
+* Getting Started
+* Architecture
+* Core Components
+* Services
+* Communication
+* Robotics
+* Testing
+* Design Decisions
+* API Reference
 
 ---
 
-## Testing Philosophy
+# Examples
 
-*Testing is a core design constraint, not an afterthought.*
+Practical examples are maintained in the companion (CoreX)[https://github.com/jmend3s/CoreX] repository.
 
-**CoreKit supports:**
- - Host-based unit tests
- - Target-based embedded tests
- - Mocked hardware interfaces
- - CI-ready architecture
+Examples include:
 
-All modules are designed to be testable without hardware dependencies.
+* LED Blink
+* GPIO
+* SPI
+* UART
+* I²C
+* PWM
+* Timers
+* Logging
+* NRF24 Transmitter
+* NRF24 Receiver
+* Motor Driver
+* IMU
+  
+---
+
+# Testing
+
+Testing is a core part of the framework.
+
+CoreKit supports:
+
+* Host unit testing
+* Continuous Integration
+
+Every module is designed to be testable independently from the underlying hardware whenever possible.
 
 ---
 
-## Companion Repository
+# Roadmap
 
-CoreKit focuses on the framework itself.
+## Current
 
-**[CoreX](https://github.com/jmend3s/CoreX) provides:**
- - Usage examples
- - Integration tests
- - Reference applications
- - Real-world robotics implementations
+* GPIO
+* SPI
+* Logging
+* Error handling
+* Dependency Injection
+* Testing infrastructure
+
+## In Progress
+
+* Communication drivers
+* Service framework
+* Platform abstraction improvements
+
+## Future
+
+* BLE
+* CAN
+* Robotics algorithms
+* Motion control
+* Localization
+* Sensor fusion
+* ROS 2 integration
+* Additional hardware platforms
 
 ---
 
-## Intended Audience
+# Contributing
 
-**CoreKit is designed for:**
+Contributions are welcome.
 
- - Robotics engineers
- - Embedded developers
- - Research and prototyping teams
- - Students learning embedded systems
- - Robotics startups and industrial applications
+Whether you're fixing bugs, improving documentation, adding drivers, or proposing architectural improvements, your help is appreciated.
+
+Please read the contribution guidelines before opening a pull request.
 
 ---
 
-## Contributing
+# Vision
 
-Contributions and architectural discussions are welcome.
+CoreKit aims to become a modern foundation for embedded robotics software.
 
-Development guidelines will evolve as the project matures.
+Rather than being just another hardware abstraction library, it strives to provide a clean, scalable architecture that supports projects ranging from simple microcontroller applications to complex robotic systems while remaining lightweight enough for real-time embedded development.
