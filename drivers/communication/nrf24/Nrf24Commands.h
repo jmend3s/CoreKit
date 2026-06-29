@@ -4,6 +4,7 @@
 
 #include <cstdint>
 
+
 enum class Command : uint8_t
 {
     R_REGISTER          = 0x00,
